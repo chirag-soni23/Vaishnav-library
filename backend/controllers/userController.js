@@ -135,7 +135,7 @@ export const resetPassword = tryCatch(async (req, res) => {
         return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    user.password = password; // Auto Hashing Schema Middleware Handle Karega
+    user.password = password; 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();

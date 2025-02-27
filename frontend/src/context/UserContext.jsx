@@ -86,7 +86,7 @@ export const UserProvider = ({ children }) => {
         setBtnLoading(true);
         try {
             const { data } = await axios.get("/api/user/logout");
-            toast.success(data.message);
+            toast.success(data.message ||"User Logout successfully!");
             setUser(null);
             setIsAuth(false);
         } catch (error) {
@@ -121,7 +121,6 @@ export const UserProvider = ({ children }) => {
             const { data } = await axios.delete(`/api/user/users/${userId}`);
             toast.success(data.message);
 
-            // Update UI after deletion
             setAllUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to delete user.");
