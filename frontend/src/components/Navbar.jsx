@@ -51,18 +51,6 @@ const Navbar = () => {
               <span className="hidden sm:inline">Profile</span>
             </Link>
 
-            {/* transaction history */}
-            <Link
-              to="/transaction-history"
-              className={`
-              btn btn-sm gap-2 transition-colors
-              
-              `}
-            >
-              <History className="w-4 h-4" />
-              <span className="hidden sm:inline">Transaction Hitory</span>
-            </Link>
-
             {/* all users */}
             {/* <Link
               to="/all-users"
