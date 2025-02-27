@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Book, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserData } from "../context/UserContext"; 
+import { UserData } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { loginUser, btnLoading } = UserData(); 
+  const { loginUser, forgotPassword, btnLoading } = UserData(); 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -14,6 +15,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await loginUser(email, password, navigate);
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your email first.");
+      return;
+    }
+    await forgotPassword(email);
   };
 
   return (
@@ -53,11 +62,8 @@ const Login = () => {
 
           {/* Password */}
           <div className="form-control">
-            <label className="label flex justify-between">
+            <label className="label">
               <span className="label-text font-medium">Password</span>
-              <Link to="/forgot-password" className="text-primary text-sm hover:underline">
-                Forgot Password?
-              </Link>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -85,13 +91,24 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Forgot Password Link */}
+          <div className="text-right">
+            <button
+              type="button"
+              className="link link-primary text-sm"
+              onClick={handleForgotPassword}
+            >
+              Forgot Password?
+            </button>
+          </div>
+
           {/* Login Button */}
           <button type="submit" className="btn btn-primary w-full" disabled={btnLoading}>
             {btnLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        {/* Register & Forgot Password Links */}
+        {/* Register Link */}
         <div className="text-center">
           <p className="text-base-content/60">
             Not a member?{" "}
