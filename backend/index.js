@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import attendanceRoutes from './routes/attendanceRoutes.js';
 import path from "path";
 import cors from "cors";
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 // routes
 app.use('/api/user', userRoutes);
+app.use('/api/attendance',attendanceRoutes);
 
  
 // app.get((req, res) = > {
