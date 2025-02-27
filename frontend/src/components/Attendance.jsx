@@ -12,8 +12,6 @@ export default function Attendance() {
   const { markAttendance, attendanceRecords, fetchAttendanceByDate } = AttendanceData();
   const { user } = UserData();
   const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [agenda, setAgenda] = useState([]);
 
   useEffect(() => {
     fetchTodayAttendance();
@@ -21,10 +19,12 @@ export default function Attendance() {
 
   useEffect(() => {
     const formattedEvents = attendanceRecords.map((record) => ({
-      title: `${record.student.name} - ${record.status}`,
+      title: record.student.name,  // 👈 Student name as title
       start: new Date(record.date),
       end: new Date(record.date),
       allDay: true,
+      student: record.student,  // 👈 Storing student data
+      status: record.status,  // 👈 Storing attendance status
     }));
     setEvents(formattedEvents);
   }, [attendanceRecords]);
@@ -60,11 +60,10 @@ export default function Attendance() {
     }
   };
 
-  const handleSelectDate = async ({ start }) => {
-    const selected = moment(start).format("YYYY-MM-DD");
-    setSelectedDate(selected);
-    const fetchedAttendance = await fetchAttendanceByDate(selected);
-    setAgenda(fetchedAttendance);
+  const handleSelectEvent = (event) => {
+    toast.success(`${event.student.name} is marked as ${event.status}`, {
+      duration: 4000,
+    });
   };
 
   return (
@@ -78,27 +77,12 @@ export default function Attendance() {
           events={events}
           selectable
           onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectDate} // Now working correctly
+          onSelectEvent={handleSelectEvent}  // 👈 Click event added
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
         />
       </div>
-
-      {/* Agenda View - Properly updated now */}
-      {agenda.length > 0 && (
-        <div className="mt-5 bg-white text-black p-5 rounded-lg shadow-lg">
-          <h2 className="text-xl font-bold mb-3">Attendance for {selectedDate}</h2>
-          <ul className="divide-y divide-gray-300">
-            {agenda.map((record) => (
-              <li key={record._id} className="p-2 flex justify-between">
-                <span>{record.student.name}</span>
-                <span className="font-bold text-green-500">Present</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       <Toaster />
     </div>
