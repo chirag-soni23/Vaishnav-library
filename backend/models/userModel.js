@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         match: [/^\S+@\S+\.\S+$/, "Invalid email format"]
     },
+    mobileNumber: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        match: [/^\d{10}$/, "Invalid mobile number"] // 10-digit number validation
+    },
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ['member', 'admin'], default: 'member' },
     resetPasswordToken: String,
