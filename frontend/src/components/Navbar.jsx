@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Book, History, LogOut, Settings, User, Users } from "lucide-react";
+import { Book,LogOut, Settings, User, Users } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
