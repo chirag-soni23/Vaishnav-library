@@ -43,6 +43,7 @@ export const UserProvider = ({ children }) => {
             setUser(data.user);
             setIsAuth(true);
             navigate("/");
+            window.location.reload();
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed.");
         } finally {
