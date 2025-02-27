@@ -63,9 +63,8 @@ export default function Attendance() {
   const handleSelectDate = async ({ start }) => {
     const selected = moment(start).format("YYYY-MM-DD");
     setSelectedDate(selected);
-
-    await fetchAttendanceByDate(selected);
-    setAgenda(attendanceRecords.filter(record => moment(record.date).format("YYYY-MM-DD") === selected));
+    const fetchedAttendance = await fetchAttendanceByDate(selected);
+    setAgenda(fetchedAttendance);
   };
 
   return (
@@ -79,14 +78,14 @@ export default function Attendance() {
           events={events}
           selectable
           onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectDate}
+          onSelectEvent={handleSelectDate} // Now working correctly
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
         />
       </div>
 
-      {/* Agenda View */}
+      {/* Agenda View - Properly updated now */}
       {agenda.length > 0 && (
         <div className="mt-5 bg-white text-black p-5 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-3">Attendance for {selectedDate}</h2>
