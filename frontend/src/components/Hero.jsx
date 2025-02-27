@@ -14,7 +14,7 @@ const Hero = () => {
             backSpeed={30}
           />
         </h1>
-        <p className="text-lg sm:text-xl text-white/80 mb-6">
+        <p className="text-lg sm:text-xl mb-6">
           Discover a world of knowledge with thousands of books, journals, and research materials.
         </p>
         
@@ -34,7 +34,7 @@ const Hero = () => {
 
       {/* Moving Thoughts Line */}
       <div className="absolute bottom-5 w-full overflow-hidden whitespace-nowrap">
-        <div className="animate-marquee text-lg font-semibold text-white flex space-x-10">
+        <div className="animate-marquee text-lg font-semibold flex space-x-10">
           <span>A reader lives a thousand lives before he dies.</span>
           <span>Books are a uniquely portable magic.</span>
           <span>Knowledge is power, read more books!</span>
