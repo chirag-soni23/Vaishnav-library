@@ -31,6 +31,30 @@ const Hero = () => {
       <div className="hidden md:block md:w-1/2">
         <img src="https://images.unsplash.com/photo-1419640303358-44f0d27f48e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMGJvb2t8ZW58MHx8MHx8fDA%3D" alt="Library" className="w-full h-auto rounded-lg shadow-lg" />
       </div>
+
+      {/* Moving Thoughts Line */}
+      <div className="absolute bottom-5 w-full overflow-hidden whitespace-nowrap">
+        <div className="animate-marquee text-lg font-semibold text-white flex space-x-10">
+          <span>A reader lives a thousand lives before he dies.</span>
+          <span>Books are a uniquely portable magic.</span>
+          <span>Knowledge is power, read more books!</span>
+          <span>Explore. Dream. Discover.</span>
+        </div>
+      </div>
+
+      <style>
+        {`
+          @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+          }
+          .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+          }
+        `}
+      </style>
     </section>
   );
 };
