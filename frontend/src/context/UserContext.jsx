@@ -85,8 +85,8 @@ export const UserProvider = ({ children }) => {
     async function logout() {
         setBtnLoading(true);
         try {
-            const { data } = await axios.get("/api/user/logout");
-            toast.success(data.message ||"User Logout successfully!");
+            const { data } = await axios.post("/api/user/logout");
+            toast.success(data.message || "User Logout successfully!");
             setUser(null);
             setIsAuth(false);
         } catch (error) {
@@ -100,7 +100,7 @@ export const UserProvider = ({ children }) => {
     async function editProfile({ name, email, mobileNumber, dateOfBirth }) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.patch("/api/user/users/me", { name, email, mobileNumber, dateOfBirth });
+            const { data } = await axios.patch(`/api/user/users/${user._id}`, { name, email, mobileNumber, dateOfBirth });
 
             toast.success(data.message);
             setUser((prev) => ({
@@ -146,7 +146,7 @@ export const UserProvider = ({ children }) => {
     async function resetPassword(token, newPassword, navigate) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.patch(`/api/user/resetpassword/${token}`, { password: newPassword });
+            const { data } = await axios.put(`/api/user/resetpassword/${token}`, { password: newPassword });
             toast.success(data.message);
             navigate("/login");
         } catch (error) {
