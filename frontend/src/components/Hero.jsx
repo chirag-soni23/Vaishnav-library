@@ -4,10 +4,10 @@ import { ReactTyped } from "react-typed";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-screen flex flex-col md:flex-row items-center justify-center text-left p-6">
-      <div className="max-w-xl md:w-1/2">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-        <ReactTyped
+    <section className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center text-left p-6">
+      <div className="max-w-xl md:w-1/2 text-center md:text-left">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+          <ReactTyped
             strings={["Track books, members, and issues seamlessly", "Digitalize your library management", "Efficient library solutions at your fingertips"]}
             typeSpeed={50}
             loop
@@ -18,7 +18,7 @@ const Hero = () => {
           Discover a world of knowledge with thousands of books, journals, and research materials.
         </p>
         
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           <Link to="/browse" className="btn btn-primary flex items-center gap-2">
             <BookOpen className="size-5" /> Browse Books
           </Link>
@@ -28,8 +28,8 @@ const Hero = () => {
         </div>
       </div>
       
-      <div className="hidden md:block md:w-1/2">
-        <img src="https://images.unsplash.com/photo-1419640303358-44f0d27f48e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMGJvb2t8ZW58MHx8MHx8fDA%3D" alt="Library" className="w-full h-auto rounded-lg shadow-lg" />
+      <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
+        <img src="https://images.unsplash.com/photo-1419640303358-44f0d27f48e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMGJvb2t8ZW58MHx8MHx8fDA%3D" alt="Library" className="w-full max-w-md md:max-w-lg h-auto rounded-lg shadow-lg" />
       </div>
 
       {/* Moving Thoughts Line */}
