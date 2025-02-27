@@ -1,29 +1,29 @@
 import generateToken from "../utils/generateToken.js";
 import tryCatch from "../utils/tryCatch.js";
-import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
-import { User } from '../models/userModel.js';
-import sendEmail from '../utils/sendEmail.js';
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import { User } from "../models/userModel.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // Register User
 export const registerUser = tryCatch(async (req, res) => {
-    const { name, email, password, mobileNumber } = req.body;
+    const { name, email, password, mobileNumber, dateOfBirth } = req.body;
 
     let user = await User.findOne({ email });
     if (user) {
         return res.status(400).json({ message: "User already exists!" });
-    };
+    }
 
     user = await User.create({
-        name, 
-        email, 
-        password, 
-        mobileNumber
+        name,
+        email,
+        password,
+        mobileNumber,
+        dateOfBirth,
     });
 
     generateToken(user._id, res);
-
-    res.status(200).json({ message: "User registered successfully!" });
+    res.status(201).json({ message: "User registered successfully!" });
 });
 
 // Login User
@@ -33,15 +33,14 @@ export const loginUser = tryCatch(async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
         return res.status(400).json({ message: "Invalid email or password" });
-    };
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
         return res.status(400).json({ message: "Invalid email or password" });
-    };
+    }
 
     generateToken(user._id, res);
-
     res.status(200).json({ message: "User logged in successfully!" });
 });
 
@@ -59,9 +58,9 @@ export const logout = tryCatch(async (req, res) => {
 
 // Edit User
 export const editUser = tryCatch(async (req, res) => {
-    const { name, email, mobileNumber } = req.body;
+    const { name, email, mobileNumber, dateOfBirth } = req.body;
     const user = await User.findById(req.params.id);
-    
+
     if (!user) {
         return res.status(404).json({ message: "User not found!" });
     }
@@ -69,6 +68,7 @@ export const editUser = tryCatch(async (req, res) => {
     user.name = name || user.name;
     user.email = email || user.email;
     user.mobileNumber = mobileNumber || user.mobileNumber;
+    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
 
     await user.save();
 
@@ -78,7 +78,7 @@ export const editUser = tryCatch(async (req, res) => {
 // Delete User
 export const deleteUser = tryCatch(async (req, res) => {
     const user = await User.findById(req.params.id);
-    
+
     if (!user) {
         return res.status(404).json({ message: "User not found!" });
     }
@@ -127,8 +127,8 @@ export const resetPassword = tryCatch(async (req, res) => {
 
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const user = await User.findOne({
-        resetPasswordToken: hashedToken, 
-        resetPasswordExpire: { $gt: Date.now() }
+        resetPasswordToken: hashedToken,
+        resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {

@@ -53,8 +53,11 @@ const Login = () => {
 
           {/* Password */}
           <div className="form-control">
-            <label className="label">
+            <label className="label flex justify-between">
               <span className="label-text font-medium">Password</span>
+              <Link to="/forgot-password" className="text-primary text-sm hover:underline">
+                Forgot Password?
+              </Link>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -88,7 +91,7 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Register Link */}
+        {/* Register & Forgot Password Links */}
         <div className="text-center">
           <p className="text-base-content/60">
             Not a member?{" "}

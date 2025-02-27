@@ -17,6 +17,16 @@ const userSchema = new mongoose.Schema({
         unique: true, 
         match: [/^\d{10}$/, "Invalid mobile number"] // 10-digit number validation
     },
+    dateOfBirth: { 
+        type: Date, 
+        required: true,
+        validate: {
+            validator: function(value) {
+                return value <= new Date(); // DOB should not be in the future
+            },
+            message: "Date of birth cannot be in the future"
+        }
+    },
     password: { type: String, required: true, minlength: 6 },
     role: { type: String, enum: ['member', 'admin'], default: 'member' },
     resetPasswordToken: String,

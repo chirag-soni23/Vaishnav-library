@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Book, Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from "lucide-react";
+import { Book, Eye, EyeOff, Loader2, Lock, Mail, Phone, User, Calendar } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import {UserData} from "../context/UserContext.jsx";
-
+import { UserData } from "../context/UserContext.jsx";
 
 const Register = () => {
   const { registerUser, btnLoading } = UserData(); 
@@ -12,13 +11,14 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [password, setPassword] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await registerUser(name, email, password, mobileNumber, navigate);
+    await registerUser(name, email, password, mobileNumber, dateOfBirth, navigate);
   };
 
   return (
@@ -97,35 +97,54 @@ const Register = () => {
               </div>
             </div>
 
+            {/* Date of Birth */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Date of Birth</span>
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Calendar className="size-5 text-base-content/40" />
+                </div>
+                <input
+                  type="date"
+                  className="input input-bordered w-full pl-10"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
             {/* Password */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Password</span>
               </label>
               <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="size-5 text-base-content/40" />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="size-5 text-base-content/40" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="input input-bordered w-full pl-10"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <Eye className="size-5 text-base-content/40" />
+                  ) : (
+                    <EyeOff className="size-5 text-base-content/40" />
+                  )}
+                </button>
               </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="input input-bordered w-full pl-10"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <Eye className="size-5 text-base-content/40" />
-                ) : (
-                  <EyeOff className="size-5 text-base-content/40" />
-                )}
-              </button>
-            </div>
             </div>
 
             {/* Submit Button */}

@@ -13,14 +13,15 @@ export const UserProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     // Register User
-    async function registerUser(name, email, password, mobileNumber, navigate) {
+    async function registerUser(name, email, password, mobileNumber, dateOfBirth, navigate) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.post("api/user/register", {
+            const { data } = await axios.post("/api/user/register", {
                 name,
                 email,
                 password,
                 mobileNumber,
+                dateOfBirth,
             });
             toast.success(data.message);
             setUser(data.user);
@@ -96,10 +97,10 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    async function editProfile({ name, email, mobileNumber }) {
+    async function editProfile({ name, email, mobileNumber, dateOfBirth }) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.patch("/api/user/users/me", { name, email, mobileNumber });
+            const { data } = await axios.patch("/api/user/users/me", { name, email, mobileNumber, dateOfBirth });
 
             toast.success(data.message);
             setUser((prev) => ({
@@ -129,6 +130,33 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    // Forgot Password
+    async function forgotPassword(email) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.post("/api/user/forgotpassword", { email });
+            toast.success(data.message);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to send password reset email.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+    // Reset Password
+    async function resetPassword(token, newPassword, navigate) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.patch(`/api/user/resetpassword/${token}`, { password: newPassword });
+            toast.success(data.message);
+            navigate("/login");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Password reset failed.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
     return (
         <UserContext.Provider
             value={{
@@ -136,7 +164,9 @@ export const UserProvider = ({ children }) => {
                 loginUser,
                 logout,
                 fetchAllUsers,
-                deleteUser, 
+                deleteUser,
+                forgotPassword,
+                resetPassword,
                 btnLoading,
                 isAuth,
                 user,
