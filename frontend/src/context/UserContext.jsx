@@ -68,6 +68,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         fetchUser();
+        fetchAllUsers();
     }, []);
 
     // Fetch All Users (Admin Only)
@@ -76,6 +77,7 @@ export const UserProvider = ({ children }) => {
         try {
             const { data } = await axios.get("/api/user/users");
             setAllUsers(data);
+            setIsLoading(false);
         } catch (error) {
             console.error("Failed to fetch all users:", error);
         } finally {

@@ -27,7 +27,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* settings */}
+            {/* admin */}
             <Link
               to="/admin"
               className={`

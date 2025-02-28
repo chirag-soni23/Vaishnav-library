@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
@@ -60,6 +60,9 @@ export const AttendanceProvider = ({ children }) => {
             setLoading(false);
         }
     }
+    useEffect(()=>{
+        fetchAllAttendance()
+    },[]);
 
     // Delete Attendance Record
     async function deleteAttendance(id) {
