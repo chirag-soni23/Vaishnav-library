@@ -6,6 +6,7 @@ import Card from '../components/Card'
 import Rules from '../components/Rules'
 import Contact from '../components/Contact'
 import Video from '../components/Video'
+import Footer from '../components/Footer'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
       <Rules/>
       <Video/>
       <Contact/>
+      <Footer/>
     </div>
   )
 }
