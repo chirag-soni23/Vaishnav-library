@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BookOpen, Search } from "lucide-react";
 import { ReactTyped } from "react-typed";
+import book from "../assets/book.png";
 
 const Hero = () => {
   return (
@@ -29,7 +30,7 @@ const Hero = () => {
       </div>
       
       <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
-        <img src="https://images.unsplash.com/photo-1419640303358-44f0d27f48e7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFyayUyMGJvb2t8ZW58MHx8MHx8fDA%3D" alt="Library" className="w-full max-w-md md:max-w-lg h-auto rounded-lg shadow-lg" />
+        <img src={book} alt="Library" className="w-full max-w-md md:max-w-lg h-auto rounded-lg shadow-lg" />
       </div>
 
       {/* Moving Thoughts Line */}
