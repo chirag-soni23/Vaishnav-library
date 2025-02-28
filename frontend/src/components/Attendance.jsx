@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -12,6 +12,7 @@ export default function Attendance() {
   const { markAttendance, attendanceRecords, fetchAttendanceByDate } = AttendanceData();
   const { user } = UserData();
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);  // For controlling loading state
 
   useEffect(() => {
     fetchTodayAttendance();
@@ -19,20 +20,22 @@ export default function Attendance() {
 
   useEffect(() => {
     const formattedEvents = attendanceRecords.map((record) => ({
-      title: record.student.name,  // 👈 Student name as title
+      title: record.student.name,
       start: new Date(record.date),
       end: new Date(record.date),
       allDay: true,
-      student: record.student,  // 👈 Storing student data
-      status: record.status,  // 👈 Storing attendance status
+      student: record.student,
+      status: record.status,
     }));
     setEvents(formattedEvents);
   }, [attendanceRecords]);
 
-  const fetchTodayAttendance = async () => {
+  const fetchTodayAttendance = useCallback(async () => {
     const today = moment().format("YYYY-MM-DD");
+    setLoading(true);
     await fetchAttendanceByDate(today);
-  };
+    setLoading(false);
+  }, [fetchAttendanceByDate]);
 
   const handleSelectSlot = async ({ start }) => {
     const today = moment().format("YYYY-MM-DD");
@@ -51,6 +54,7 @@ export default function Attendance() {
       if (alreadyMarked) {
         toast.error("Attendance already marked!");
       } else {
+        setLoading(true);  // Set loading to true while marking attendance
         await markAttendance(user._id);
         toast.success("Attendance marked successfully!");
         fetchTodayAttendance();
@@ -72,17 +76,25 @@ export default function Attendance() {
       <p className="text-center text-lg mb-5">Please mark your attendance</p>
 
       <div className="bg-white text-black p-5 rounded-lg shadow-lg">
-        <Calendar
-          localizer={localizer}
-          events={events}
-          selectable
-          onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectEvent}  // 👈 Click event added
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
-        />
+        <div style={{ width: "100%", height: "500px" }}>
+          <Calendar
+            localizer={localizer}
+            // events={events}  // Ensure events are passed for the calendar
+            selectable
+            onSelectSlot={handleSelectSlot}
+            onSelectEvent={handleSelectEvent}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: "100%", width: "100%" }}  // Make calendar fully responsive
+          />
+        </div>
       </div>
+
+      {loading && (
+        <div className="loading-indicator">
+          <p>Loading...</p>
+        </div>
+      )}
 
       <Toaster />
     </div>
