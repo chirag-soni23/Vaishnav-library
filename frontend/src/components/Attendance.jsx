@@ -12,8 +12,7 @@ export default function Attendance() {
   const { markAttendance, attendanceRecords, fetchAttendanceByDate } = AttendanceData();
   const { user } = UserData();
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);  // For controlling loading state
-
+  const [loading, setLoading] = useState(false); 
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
@@ -54,9 +53,8 @@ export default function Attendance() {
       if (alreadyMarked) {
         toast.error("Attendance already marked!");
       } else {
-        setLoading(true);  // Set loading to true while marking attendance
+        setLoading(true);  
         await markAttendance(user._id);
-        toast.success("Attendance marked successfully!");
         fetchTodayAttendance();
       }
     } else {
@@ -85,7 +83,7 @@ export default function Attendance() {
             onSelectEvent={handleSelectEvent}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: "100%", width: "100%" }}  // Make calendar fully responsive
+            style={{ height: "100%", width: "100%" }}  
           />
         </div>
       </div>
