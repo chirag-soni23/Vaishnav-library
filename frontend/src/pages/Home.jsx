@@ -5,6 +5,7 @@ import Attendance from '../components/Attendance'
 import Card from '../components/Card'
 import Rules from '../components/Rules'
 import Contact from '../components/Contact'
+import Video from '../components/Video'
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <Attendance/>
       <Card/>
       <Rules/>
+      <Video/>
       <Contact/>
     </div>
   )
