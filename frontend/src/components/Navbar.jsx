@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Book,LogOut, Settings, User, Users } from "lucide-react";
+import { Book,LogOut, Settings, User, User2, Users } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
@@ -29,6 +29,18 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             {/* settings */}
             <Link
+              to="/admin"
+              className={`
+              btn btn-sm gap-2 transition-colors
+              
+              `}
+            >
+              <User2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Admin</span>
+            </Link>
+
+            {/* settings */}
+            <Link
               to="/settings"
               className={`
               btn btn-sm gap-2 transition-colors
@@ -51,36 +63,11 @@ const Navbar = () => {
               <span className="hidden sm:inline">Profile</span>
             </Link>
 
-            {/* all users */}
-            {/* <Link
-              to="/all-users"
-              className={`${user.role == "admin" ? "":"hidden"}
-              btn btn-sm gap-2 transition-colors
-              
-              `}
-            >
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">All Users</span>
-            </Link> */}
-
             <button className="flex gap-2 items-center" onClick={logoutHandler}>
                   <LogOut className="size-5" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
 
-            {/* {authUser && (
-              <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2`}>
-                  <User className="size-5" />
-                  <span className="hidden sm:inline">Profile</span>
-                </Link>
-
-                <button className="flex gap-2 items-center" onClick={logout}>
-                  <LogOut className="size-5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
-              </>
-            )} */}
           </div>
         </div>
       </div>

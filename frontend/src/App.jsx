@@ -9,6 +9,7 @@ import Setting from "./pages/Setting";
 import Navbar from "./components/Navbar";
 import { useThemeStore } from "./context/useThemeStore";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 
 const App = () => {
   const { isAuth, loading } = UserData();
@@ -23,6 +24,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={isAuth ? <Home /> : <Login />} />
         <Route path="/settings" element={isAuth ? <Setting /> : <Login />} />
+        <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
         <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={isAuth ? <Home /> : <Login />} />
