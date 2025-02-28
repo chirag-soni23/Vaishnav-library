@@ -24,6 +24,7 @@ app.use('/api/attendance',attendanceRoutes);
 //   res.send('Hello Sanjay, Your Backend is Working!');
 // });
 
+
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/frontend/dist")))
 app.get("*", (req, res) => {
