@@ -4,25 +4,28 @@ import { AttendanceData } from '../context/AttendanceContext';
 
 const Admin = () => {
   const { allUsers } = UserData();
-  const { attendanceRecords } = AttendanceData();
+  const { attendanceRecords, deleteAttendance } = AttendanceData();
   const [activeTab, setActiveTab] = useState('users'); 
 
+  const handleDelete = (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
+    if (confirmDelete) {
+      deleteAttendance(id);
+    }
+  };
+
   return (
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto mt-16">
       {/* Tabs */}
       <div className="flex space-x-4 border-b-2">
         <button
-          className={`py-2 px-4 ${
-            activeTab === 'users' ? 'border-b-4 border-blue-500 font-bold' : ''
-          }`}
+          className={`py-2 px-4 ${activeTab === 'users' ? 'border-b-4 border-blue-500 font-bold' : ''}`}
           onClick={() => setActiveTab('users')}
         >
           Users
         </button>
         <button
-          className={`py-2 px-4 ${
-            activeTab === 'attendance' ? 'border-b-4 border-blue-500 font-bold' : ''
-          }`}
+          className={`py-2 px-4 ${activeTab === 'attendance' ? 'border-b-4 border-blue-500 font-bold' : ''}`}
           onClick={() => setActiveTab('attendance')}
         >
           Attendance
@@ -69,6 +72,7 @@ const Admin = () => {
                 <th>Name</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Actions</th> {/* New Column for Delete Button */}
               </tr>
             </thead>
             <tbody>
@@ -79,11 +83,19 @@ const Admin = () => {
                     <td>{record.student.name}</td>
                     <td>{new Date(record.date).toLocaleDateString()}</td>
                     <td>{record.status}</td>
+                    <td>
+                      <button 
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+                        onClick={() => handleDelete(record._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center">
+                  <td colSpan="5" className="text-center">
                     No Attendance Records
                   </td>
                 </tr>
