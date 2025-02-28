@@ -20,7 +20,6 @@ app.use(cookieParser());
 app.use('/api/user', userRoutes);
 app.use('/api/attendance',attendanceRoutes);
 
- 
 // app.get((req, res) = > {
 //   res.send('Hello Sanjay, Your Backend is Working!');
 // });
