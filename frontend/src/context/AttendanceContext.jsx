@@ -42,7 +42,7 @@ export const AttendanceProvider = ({ children }) => {
             const { data } = await axios.get("/api/attendance/getall");
             setAttendanceRecords(data);
         } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to fetch all attendance records.");
+            console.error(error.response?.data?.message || "Failed to fetch all attendance records.");
         } finally {
             setLoading(false);
         }

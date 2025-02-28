@@ -3,7 +3,7 @@ import { Book,LogOut, Settings, User, User2, Users } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
-  const {logout} = UserData();
+  const {logout,user} = UserData();
   const navigate = useNavigate()
   function logoutHandler(){
     logout()
@@ -28,6 +28,7 @@ const Navbar = () => {
 
           <div className="flex items-center gap-2">
             {/* admin */}
+            {user.role == "admin" ?
             <Link
               to="/admin"
               className={`
@@ -37,7 +38,7 @@ const Navbar = () => {
             >
               <User2 className="w-4 h-4" />
               <span className="hidden sm:inline">Admin</span>
-            </Link>
+            </Link>:""}
 
             {/* settings */}
             <Link
