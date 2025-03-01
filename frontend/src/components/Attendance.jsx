@@ -81,7 +81,7 @@ export default function Attendance() {
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            events={events}  // Ensure events are passed for the calendar
+            // events={events}  // Ensure events are passed for the calendar
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
