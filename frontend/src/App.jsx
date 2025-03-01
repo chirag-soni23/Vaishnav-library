@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import { useThemeStore } from "./context/useThemeStore";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
   const { isAuth, loading } = UserData();
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={isAuth ? <Home /> : <Login />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>
       </div>
     </BrowserRouter>
