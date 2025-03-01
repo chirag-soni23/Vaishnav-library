@@ -58,22 +58,31 @@ export const logout = tryCatch(async (req, res) => {
 
 // Edit User
 export const editUser = tryCatch(async (req, res) => {
-    const { name, email, mobileNumber, dateOfBirth } = req.body;
+    const { name, email, mobileNumber, dateOfBirth, role } = req.body;
+
     const user = await User.findById(req.params.id);
 
     if (!user) {
         return res.status(404).json({ message: "User not found!" });
     }
 
+    // If the role is being updated, ensure it is valid
+    if (role && !['member', 'admin'].includes(role)) {
+        return res.status(400).json({ message: "Invalid role specified!" });
+    }
+
+    // Update the user data
     user.name = name || user.name;
     user.email = email || user.email;
     user.mobileNumber = mobileNumber || user.mobileNumber;
     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+    user.role = role || user.role; // Update the role if specified
 
     await user.save();
 
     res.status(200).json({ message: "User updated successfully!", user });
 });
+
 
 // Delete User
 export const deleteUser = tryCatch(async (req, res) => {

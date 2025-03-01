@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { UserData } from '../context/UserContext';
 import { AttendanceData } from '../context/AttendanceContext';
+import {UserData} from '../context/UserContext'
 
 const Admin = () => {
-  const { allUsers, deleteUser } = UserData();  // Import deleteUser from UserContext
+  const { allUsers, deleteUser } = UserData(); 
   const { attendanceRecords, deleteAttendance } = AttendanceData();
   
   const [activeTab, setActiveTab] = useState('users');
-  const [searchQuery, setSearchQuery] = useState(''); // State to store search query
+  const [searchQuery, setSearchQuery] = useState(''); 
 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
@@ -19,7 +19,7 @@ const Admin = () => {
   const handleDeleteUser = (userId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
-      deleteUser(userId);  // Call deleteUser function from context
+      deleteUser(userId); 
     }
   };
 
@@ -42,7 +42,7 @@ const Admin = () => {
           className="input input-bordered w-full max-w-xs mt-10"
           placeholder="Search by Name"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+          onChange={(e) => setSearchQuery(e.target.value)} 
         />
       </div>
 

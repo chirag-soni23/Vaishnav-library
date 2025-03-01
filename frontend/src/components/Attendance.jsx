@@ -12,7 +12,8 @@ export default function Attendance() {
   const { markAttendance, attendanceRecords, fetchAttendanceByDate } = AttendanceData();
   const { user } = UserData();
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
@@ -50,7 +51,10 @@ export default function Attendance() {
     );
 
     if (selected === today) {
-      if (alreadyMarked) {
+      if (user.role === "user") {
+        // Popup for users with role "user"
+        toast.error("If you're added in the library, please contact the admin.");
+      } else if (alreadyMarked) {
         toast.error("Attendance already marked!");
       } else {
         setLoading(true);  
@@ -77,7 +81,7 @@ export default function Attendance() {
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            // events={events}  // Ensure events are passed for the calendar
+            events={events}  // Ensure events are passed for the calendar
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}

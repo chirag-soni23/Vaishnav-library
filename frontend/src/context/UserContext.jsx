@@ -101,10 +101,16 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    async function editProfile({ name, email, mobileNumber, dateOfBirth }) {
+    async function editProfile({ name, email, mobileNumber, dateOfBirth, role }) {
         setBtnLoading(true);
         try {
-            const { data } = await axios.patch(`/api/user/users/${user._id}`, { name, email, mobileNumber, dateOfBirth });
+            // Check if the user is an admin and if the role is being updated
+            if (role && user.role !== 'admin') {
+                toast.error("Only admins can update user roles.");
+                return;
+            }
+
+            const { data } = await axios.patch(`/api/user/users/${user._id}`, { name, email, mobileNumber, dateOfBirth, role });
 
             toast.success(data.message);
             setUser((prev) => ({
@@ -117,6 +123,7 @@ export const UserProvider = ({ children }) => {
             setBtnLoading(false);
         }
     }
+
 
     // **Delete User (Admin Only)**
     async function deleteUser(userId) {
