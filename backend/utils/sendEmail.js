@@ -1,20 +1,22 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
-const sendEmail = async ({ email, subject, message }) => {
-    const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.SMTP_EMAIL,
-            pass: process.env.SMTP_PASSWORD,
-        },
-    });
+const sendEmail = async (options) => {
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-    await transporter.sendMail({
-        from: process.env.SMTP_EMAIL,
-        to: email,
-        subject,
-        text: message,
-    });
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: options.email,
+    subject: options.subject,
+    text: options.message,
+  };
+
+  await transporter.sendMail(mailOptions);
 };
 
 export default sendEmail;

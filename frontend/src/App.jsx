@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={isAuth ? <Home /> : <Login />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/resetpassword/:token" element={<ResetPassword />} />
       </Routes>
       </div>
     </BrowserRouter>
