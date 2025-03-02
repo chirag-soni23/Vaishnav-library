@@ -3,7 +3,7 @@ import { AttendanceData } from '../context/AttendanceContext';
 import { UserData } from '../context/UserContext';
 
 const Admin = () => {
-  const { allUsers, deleteUser, editProfile } = UserData(); // Add editProfile function
+  const { allUsers, deleteUser, editProfile } = UserData(); 
   const { attendanceRecords, deleteAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
@@ -36,7 +36,7 @@ const Admin = () => {
 
   // Filtered attendance records based on search query
   const filteredAttendance = attendanceRecords.filter(record =>
-    record.student.name.toLowerCase().includes(searchQuery.toLowerCase())
+    record.student?.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

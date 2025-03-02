@@ -20,7 +20,7 @@ export default function Attendance() {
 
   useEffect(() => {
     const formattedEvents = attendanceRecords.map((record) => ({
-      title: record.student.name,
+      title: record.student?.name,
       start: new Date(record.date),
       end: new Date(record.date),
       allDay: true,
