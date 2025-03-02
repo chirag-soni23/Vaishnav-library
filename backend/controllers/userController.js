@@ -60,23 +60,21 @@ export const logout = tryCatch(async (req, res) => {
 export const editUser = tryCatch(async (req, res) => {
     const { name, email, mobileNumber, dateOfBirth, role } = req.body;
 
-    const user = await User.findById(req.params.id); // Use the ID from URL params
+    const user = await User.findById(req.params.id);
 
     if (!user) {
         return res.status(404).json({ message: "User not found!" });
     }
 
-    // If the role is being updated, ensure it is valid
     if (role && !['user', 'member'].includes(role)) {
         return res.status(400).json({ message: "Invalid role specified!" });
     }
 
-    // Update the user data
     user.name = name || user.name;
     user.email = email || user.email;
     user.mobileNumber = mobileNumber || user.mobileNumber;
     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
-    user.role = role || user.role; // Update the role if specified
+    user.role = role || user.role; 
 
     await user.save();
 
