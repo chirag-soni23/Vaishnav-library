@@ -24,8 +24,8 @@ const Admin = () => {
   };
 
   const handleRoleChange = (userId, newRole) => {
-    // Ensure that the userId is passed correctly
     editProfile({ role: newRole, userId });
+    window.location.reload();
   };
   
 
