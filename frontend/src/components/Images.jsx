@@ -17,7 +17,7 @@ const libraryImages = [
 
 const Images = () => {
   const [visibleCount, setVisibleCount] = useState(3);
-  
+
   const showMoreImages = () => {
     setVisibleCount(libraryImages.length);
   };
@@ -28,16 +28,14 @@ const Images = () => {
 
   return (
     <>
-      <h1 className="mt-10 text-bold text-3xl sm:text-4xl md:text-5xl text-center">
-        About Our Library
-      </h1>
+       <h1 className="text-3xl font-bold text-center mb-5 mt-10">About Our Library</h1>
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-base-100 shadow-xl">
         {libraryImages.slice(0, visibleCount).map((img) => (
           <figure key={img.id} className="w-full h-auto">
-            <img 
-              src={img.src} 
-              alt={`Library ${img.id}`} 
-              className="w-full h-auto rounded-lg"
+            <img
+              src={img.src}
+              alt={`Library ${img.id}`}
+              className="w-full h-60 object-cover rounded-lg transform transition duration-300 hover:scale-105"
             />
           </figure>
         ))}
