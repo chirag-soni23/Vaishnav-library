@@ -101,28 +101,36 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    async function editProfile({ name, email, mobileNumber, dateOfBirth, role }) {
-        setBtnLoading(true);
-        try {
-            // Check if the user is an admin and if the role is being updated
-            if (role && user.role !== 'admin') {
-                toast.error("Only admins can update user roles.");
-                return;
-            }
-
-            const { data } = await axios.patch(`/api/user/users/${user._id}`, { name, email, mobileNumber, dateOfBirth, role });
-
-            toast.success(data.message);
-            setUser((prev) => ({
-                ...prev,
-                ...data.user,
-            }));
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to update profile.");
-        } finally {
-            setBtnLoading(false);
+    // Edit Profile
+async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
+    setBtnLoading(true);
+    try {
+        // Check if the user is an admin and if the role is being updated
+        if (role && user.role !== 'admin') {
+            toast.error("Only admins can update user roles.");
+            return;
         }
+
+        const { data } = await axios.patch(`/api/user/users/${userId}`, { 
+            name, 
+            email, 
+            mobileNumber, 
+            dateOfBirth, 
+            role 
+        });
+
+        toast.success(data.message);
+        setUser((prev) => ({
+            ...prev,
+            ...data.user,
+        }));
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to update profile.");
+    } finally {
+        setBtnLoading(false);
     }
+}
+
 
 
     // **Delete User (Admin Only)**

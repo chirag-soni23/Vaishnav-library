@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { AttendanceData } from '../context/AttendanceContext';
-import {UserData} from '../context/UserContext'
+import { UserData } from '../context/UserContext';
 
 const Admin = () => {
-  const { allUsers, deleteUser } = UserData(); 
+  const { allUsers, deleteUser, editProfile } = UserData(); // Add editProfile function
   const { attendanceRecords, deleteAttendance } = AttendanceData();
-  
+
   const [activeTab, setActiveTab] = useState('users');
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
@@ -19,9 +19,15 @@ const Admin = () => {
   const handleDeleteUser = (userId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
     if (confirmDelete) {
-      deleteUser(userId); 
+      deleteUser(userId);
     }
   };
+
+  const handleRoleChange = (userId, newRole) => {
+    // Ensure that the userId is passed correctly
+    editProfile({ role: newRole, userId });
+  };
+  
 
   // Filtered users based on search query
   const filteredUsers = allUsers.filter(user =>
@@ -42,7 +48,7 @@ const Admin = () => {
           className="input input-bordered w-full max-w-xs mt-10"
           placeholder="Search by Name"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} 
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
@@ -74,7 +80,7 @@ const Admin = () => {
                 <th>Mobile Number</th>
                 <th>Date of Birth</th>
                 <th>Role</th>
-                <th>Actions</th> {/* Added Actions column */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -88,9 +94,18 @@ const Admin = () => {
                     <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td>
                     <td className="capitalize">{user.role}</td>
                     <td>
+                      {/* Dropdown for role selection */}
+                      <select
+                        className="bg-gray-200 text-black px-3 py-1 rounded"
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                      >
+                        <option value="user">User</option>
+                        <option value="member">Member</option>
+                      </select>
                       <button
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                        onClick={() => handleDeleteUser(user._id)}  // Call handleDeleteUser
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 ml-2"
+                        onClick={() => handleDeleteUser(user._id)} // Call handleDeleteUser
                       >
                         Delete
                       </button>
@@ -119,7 +134,7 @@ const Admin = () => {
                 <th>Name</th>
                 <th>Date</th>
                 <th>Status</th>
-                <th>Actions</th> {/* New Column for Delete Button */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -131,9 +146,9 @@ const Admin = () => {
                     <td>{new Date(record.date).toLocaleDateString()}</td>
                     <td>{record.status}</td>
                     <td>
-                      <button 
+                      <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                        onClick={() => handleDeleteAttendance(record._id)}  // Call handleDeleteAttendance
+                        onClick={() => handleDeleteAttendance(record._id)} // Call handleDeleteAttendance
                       >
                         Delete
                       </button>
