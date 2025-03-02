@@ -17,7 +17,7 @@ const Card = () => {
   }, [selectedItem]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden px-10">
       <h1 className="text-3xl font-bold text-center mb-5 mt-10">Facilities</h1>
       <div className="carousel mt-10 carousel-end gap-5">
         {Data.map((item) => (
