@@ -28,7 +28,6 @@ const Admin = () => {
     window.location.reload();
   };
   
-
   // Filtered users based on search query
   const filteredUsers = allUsers.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -40,7 +39,7 @@ const Admin = () => {
   );
 
   return (
-    <div className="container mx-auto mt-16">
+    <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8">
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -53,7 +52,7 @@ const Admin = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b-2">
+      <div className="flex flex-wrap sm:space-x-4 border-b-2 mb-4">
         <button
           className={`py-2 px-4 ${activeTab === 'users' ? 'border-b-4 border-blue-500 font-bold' : ''}`}
           onClick={() => setActiveTab('users')}
@@ -96,7 +95,7 @@ const Admin = () => {
                     <td>
                       {/* Dropdown for role selection */}
                       <select
-                        className="bg-gray-200 text-black px-3 py-1 rounded"
+                        className="bg-gray-200 text-black px-3 py-1 rounded w-full sm:w-auto"
                         value={user.role}
                         onChange={(e) => handleRoleChange(user._id, e.target.value)}
                       >
@@ -104,7 +103,7 @@ const Admin = () => {
                         <option value="member">Member</option>
                       </select>
                       <button
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 ml-2"
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto"
                         onClick={() => handleDeleteUser(user._id)} // Call handleDeleteUser
                       >
                         Delete
