@@ -41,7 +41,7 @@ const Footer = () => {
                 </ul>
             </div>
             <div className="mt-6 text-center">
-                <p className="text-sm">Created by Chirag © {new Date().getFullYear()}</p>
+                <p className="text-sm">Created by Sanjay © {new Date().getFullYear()}</p>
             </div>
         </footer>
     );
