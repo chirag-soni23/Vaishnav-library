@@ -20,7 +20,7 @@ export default function Attendance() {
 
   useEffect(() => {
     const formattedEvents = attendanceRecords.map((record) => ({
-      title: record.student?.name,
+      title: record?.student?.name,
       start: new Date(record.date),
       end: new Date(record.date),
       allDay: true,
@@ -47,7 +47,7 @@ export default function Attendance() {
     }
 
     const alreadyMarked = attendanceRecords.some(
-      (record) => record.student._id === user._id && moment(record.date).format("YYYY-MM-DD") === today
+      (record) => record.student?._id === user?._id && moment(record.date).format("YYYY-MM-DD") === today
     );
 
     if (selected === today) {
