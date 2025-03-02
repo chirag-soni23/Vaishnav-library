@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 import path from "path";
 import cors from "cors";
 import compression from 'compression';
@@ -21,6 +22,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/user', userRoutes);
 app.use('/api/attendance',attendanceRoutes);
+app.use("/api/contact",contactRoutes);
 
 // app.get((req, res) = > {
 //   res.send('Hello Sanjay, Your Backend is Working!');
