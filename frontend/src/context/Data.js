@@ -21,8 +21,8 @@ export const Data = [
   {
     id: 3,
     image: parking,
-    name: "Garage",
-    description: "Our secure garage offers ample parking space for bicycles, motorcycles, and cars, providing a safe and convenient option for library visitors. Members can access dedicated parking facilities with peace of mind, knowing their vehicles are in a monitored environment."
+    name: "Parking",
+    description: "Our parking area provides a spacious and secure environment for bicycles, motorcycles, and cars. Designed for the convenience of library visitors, the facility ensures that all vehicles are parked safely in a well-monitored space. Members can enjoy peace of mind knowing that their vehicles are protected while they access the library’s services."
   },
   {
     id: 4,
