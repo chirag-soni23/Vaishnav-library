@@ -82,7 +82,7 @@ export default function Attendance() {
   };
 
   return (
-    <div className="container mx-auto p-5">
+    <div className="container mx-auto p-2">
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
@@ -108,7 +108,7 @@ export default function Attendance() {
         </div>
       )}
 
-      <div className="bg-white text-black p-5 rounded-lg shadow-lg">
+      <div className="bg-white text-black p-4 rounded-lg shadow-lg">
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
