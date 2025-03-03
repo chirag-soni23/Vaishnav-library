@@ -25,7 +25,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use("/api/contact", contactRoutes);
 
 // app.get((req, res) = > {
-//   res.send('Hello Sanjay, Your Backend is Working!');
+//   res.send('Hello Chirag, Your Backend is Working!');
 // });
 
 const __dirname = path.resolve();
