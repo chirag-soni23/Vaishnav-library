@@ -101,33 +101,47 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
-        setBtnLoading(true);
-        try {
-            if (role && user.role !== 'admin') {
-                toast.error("Only admins can update user roles.");
-                return;
-            }
-
-            const { data } = await axios.patch(`/api/user/users/${userId}`, {
-                name,
-                email,
-                mobileNumber,
-                dateOfBirth,
-                role
-            });
-
-            toast.success(data.message);
-            setUser((prev) => ({
-                ...prev,
-                ...data.user,
-            }));
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to update profile.");
-        } finally {
-            setBtnLoading(false);
+    // Edit Profile
+async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
+    setBtnLoading(true);
+    try {
+        // Only admins can update user roles
+        if (role && user?.role !== 'admin') {
+            toast.error("Only admins can update user roles.");
+            return;
         }
+
+        const { data } = await axios.patch(`/api/user/users/${userId}`, {
+            name,
+            email,
+            mobileNumber,
+            dateOfBirth,
+            role
+        });
+
+        toast.success(data.message);
+
+        // Update the user's state after profile change
+        if (data.user._id === user?._id) {
+            setUser({
+                ...user,
+                name: data.user.name,
+                email: data.user.email,
+                mobileNumber: data.user.mobileNumber,
+                dateOfBirth: data.user.dateOfBirth,
+                role: data.user.role
+            });
+        }
+
+        // If you're updating another user's profile (as admin), update the allUsers state
+        setAllUsers(prev => prev.map(u => (u._id === userId ? data.user : u)));
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to update profile.");
+    } finally {
+        setBtnLoading(false);
     }
+}
+
 
 
 

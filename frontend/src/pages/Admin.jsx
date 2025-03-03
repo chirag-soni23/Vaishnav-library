@@ -27,7 +27,18 @@ const Admin = () => {
     // Only proceed if the role is different from the current role
     const userToUpdate = allUsers.find((user) => user._id === userId);
     if (userToUpdate && userToUpdate.role !== newRole) {
-      editProfile({ userId, newRole });  // Update the user role
+      // Update the user role using editProfile
+      editProfile({ userId, role: newRole })
+        .then(() => {
+          // After updating, reflect the change in the local state
+          const updatedUsers = allUsers.map((user) =>
+            user._id === userId ? { ...user, role: newRole } : user
+          );
+          setAllUsers(updatedUsers);
+        })
+        .catch((error) => {
+          console.error("Failed to update role:", error);
+        });
     }
   };
 
