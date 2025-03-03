@@ -86,7 +86,7 @@ export default function Attendance() {
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
-        {/* Info icon visible only on small screens */}
+       
         <button onClick={openModal} className="ml-2 text-blue-500 md:hidden">
           <Info size={20} /> {/* Info icon from lucide-react */}
         </button>
@@ -97,9 +97,8 @@ export default function Attendance() {
         <div className="modal modal-open">
           <div className="modal-box">
             <h2 className="text-2xl font-bold mb-4">How to Mark Attendance</h2>
-            <p>
-              To mark your attendance, click on the date you wish to mark. 
-              If it's today's date, your attendance will be successfully marked.
+            <p> 
+              Push the finger on today's date and release it, this will mark your attendance.
               If you're unable to mark attendance or have any issues, please contact the admin.
             </p>
             <div className="modal-action">
