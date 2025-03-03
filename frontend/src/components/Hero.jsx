@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { BookOpen, Search } from "lucide-react";
 import { ReactTyped } from "react-typed";
 import book from "../assets/book.png";
+import toast from "react-hot-toast";
 
 const Hero = () => {
+  function newFeature(){
+    toast.error("New Feature coming soon!");
+  }
   return (
     <section className="relative w-full min-h-screen flex flex-col md:flex-row items-center justify-center text-left p-6">
       <div className="max-w-xl md:w-1/2 text-center md:text-left">
@@ -20,10 +24,10 @@ const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Link to="/browse" className="btn btn-primary flex items-center gap-2">
+          <Link onClick={newFeature} to="/" className="btn btn-primary flex items-center gap-2">
             <BookOpen className="size-5" /> Browse Books
           </Link>
-          <Link to="/search" className="btn btn-secondary flex items-center gap-2">
+          <Link onClick={newFeature} to="/" className="btn btn-secondary flex items-center gap-2">
             <Search className="size-5" /> Search Library
           </Link>
         </div>
