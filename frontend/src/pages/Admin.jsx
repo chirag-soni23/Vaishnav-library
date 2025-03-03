@@ -113,8 +113,9 @@ const Admin = () => {
                         value={user.role}
                         onChange={(e) => handleRoleChange(user._id, e.target.value)}
                       >
-                        <option value="user">User</option>
-                        <option value="member">Member</option>
+                        <option value="user">{user.role}</option>
+                        <option value="user">user</option>
+                        <option value="member">member</option>
                       </select>
                       <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto"
