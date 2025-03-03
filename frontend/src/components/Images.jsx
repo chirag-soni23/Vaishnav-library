@@ -5,6 +5,9 @@ import library3 from "../assets/library3.jpg";
 import library4 from "../assets/library4.jpg";
 import library5 from "../assets/library5.jpg";
 import library6 from "../assets/library6.jpg";
+import library7 from "../assets/library7.jpg"
+import library8 from "../assets/library8.jpg"
+
 
 const libraryImages = [
   { id: 1, src: library1 },
@@ -12,7 +15,9 @@ const libraryImages = [
   { id: 3, src: library3 },
   { id: 4, src: library4 },
   { id: 5, src: library5 },
-  { id: 6, src: library6 }
+  { id: 6, src: library6 },
+  { id: 7, src: library7 },
+  { id: 8, src: library8 },
 ];
 
 const Images = () => {
