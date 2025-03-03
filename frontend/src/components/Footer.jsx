@@ -3,23 +3,20 @@ import { FaInstagram, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import sir from '../assets/sir.jpg';
 
 const Footer = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
-  const [modalTitle, setModalTitle] = useState('');        // Modal title
-  const [modalContent, setModalContent] = useState('');     // Modal content
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');     
+  const [modalContent, setModalContent] = useState('');  
 
-  // Function to open modal
   const openModal = (title, content) => {
     setModalTitle(title);
     setModalContent(content);
     setIsModalOpen(true);
   };
 
-  // Function to close modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  // Real content for each modal
+  
   const privacyPolicyContent = (
     <div>
       <p className="mt-2">At Nirmal's website, we respect your privacy. This Privacy Policy outlines the information we collect from you and how we use it.</p>
@@ -28,7 +25,7 @@ const Footer = () => {
   );
 
   const termsOfServiceContent = (
-    <div>
+    <div className>
       <p className="mt-2">By accessing or using our website, you agree to comply with these Terms of Service. You may not use this website for any illegal or unauthorized purposes.</p>
       <p className="mt-2">We reserve the right to modify or discontinue the services we offer at any time, and we are not liable for any consequences resulting from these changes.</p>
     </div>
@@ -59,7 +56,7 @@ const Footer = () => {
   );
 
   return (
-    <footer className="py-8 mt-10 text-white bg-neutral">
+    <footer className="py-8 mt-10 bg-neutral">
       <div className="container flex flex-col items-center justify-between mx-auto md:flex-row">
         <div className="flex items-center mb-6 md:mb-0">
           <div className="avatar">
@@ -67,9 +64,9 @@ const Footer = () => {
               <img src={sir} alt="Profile" />
             </div>
           </div>
-          <div className="ml-4">
-            <p className="text-lg font-semibold">Nirmal Vaishnav</p>
-            <a href="mailto:vaishnavlibrary18@gmail.com" className="text-sm hover:underline">vaishnavlibrary18@gmail.com</a>
+          <div className="ml-4 text-white">
+            <p className="text-lg font-semibold ">Nirmal Vaishnav</p>
+            <a href="mailto:vaishnavlibrary18@gmail.com" className="text-sm hover:underline ">vaishnavlibrary18@gmail.com</a>
             <div className="flex items-center mt-2">
               <FaInstagram className="mr-2 text-xl" />
               <a
@@ -92,7 +89,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <ul className="menu menu-horizontal p-0 space-x-6">
+        <ul className="menu menu-horizontal p-0 space-x-6 text-white">
           <li>
             <button
               onClick={() => openModal('Privacy Policy', privacyPolicyContent)}
@@ -128,7 +125,7 @@ const Footer = () => {
         </ul>
       </div>
 
-      <div className="mt-6 text-center">
+      <div className="mt-6 text-white text-center">
         <p className="text-sm">Created by Sanjay © {new Date().getFullYear()}</p>
       </div>
 
