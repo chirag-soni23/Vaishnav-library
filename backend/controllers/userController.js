@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { User } from "../models/userModel.js";
 import sendEmail from "../utils/sendEmail.js";
+import redisClient from "../services/redis.service.js"; // Assuming redisConfig.js is the file where Redis client is configured
 
 // Register User
 export const registerUser = tryCatch(async (req, res) => {
@@ -40,7 +41,12 @@ export const loginUser = tryCatch(async (req, res) => {
         return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    generateToken(user._id, res);
+    // Generate JWT token and store it in Redis with a TTL (e.g., 1 hour)
+    const token = generateToken(user._id, res);
+    const redisKey = `auth_token:${user._id}`;
+    
+    await redisClient.set(redisKey, token, 'EX', 3600); // Store token for 1 hour
+
     res.status(200).json({ message: "User logged in successfully!" });
 });
 
@@ -52,6 +58,12 @@ export const myProfile = tryCatch(async (req, res) => {
 
 // Logout
 export const logout = tryCatch(async (req, res) => {
+    const userId = req.user._id;
+    const redisKey = `auth_token:${userId}`;
+    
+    // Delete the user's JWT token from Redis when logging out
+    await redisClient.del(redisKey);
+
     res.cookie("token", "", { maxAge: 0 });
     res.json({ message: "User logged out successfully!" });
 });
@@ -80,8 +92,6 @@ export const editUser = tryCatch(async (req, res) => {
 
     res.status(200).json({ message: "User updated successfully!", user });
 });
-
-
 
 // Delete User
 export const deleteUser = tryCatch(async (req, res) => {
@@ -126,8 +136,7 @@ export const forgotPassword = tryCatch(async (req, res) => {
   
       res.status(500).json({ message: "Email could not be sent" });
     }
-  });
-  
+});
 
 // Reset Password
 export const resetPassword = tryCatch(async (req, res) => {
@@ -150,5 +159,4 @@ export const resetPassword = tryCatch(async (req, res) => {
     await user.save();
   
     res.status(200).json({ message: "Password reset successful!" });
-  });
-  
+});
