@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import toast, { Toaster } from "react-hot-toast";
 import { AttendanceData } from "../context/AttendanceContext";
 import { UserData } from "../context/UserContext";
-
+import { Info } from "lucide-react"; 
 const localizer = momentLocalizer(moment);
 
 export default function Attendance() {
@@ -13,7 +13,7 @@ export default function Attendance() {
   const { user } = UserData();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
@@ -52,7 +52,6 @@ export default function Attendance() {
 
     if (selected === today) {
       if (user.role === "user") {
-        // Popup for users with role "user"
         toast.error("If you're added in the library, please contact the admin.");
       } else if (alreadyMarked) {
         toast.error("Attendance already marked!");
@@ -72,16 +71,49 @@ export default function Attendance() {
     });
   };
 
+  // Function to open the modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="container mx-auto p-5">
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
-      <p className="text-center text-lg mb-5">Please mark your attendance</p>
+      <div className="text-center text-lg mb-5 flex justify-center items-center">
+        <p>Please mark your attendance</p>
+        {/* Info icon visible only on small screens */}
+        <button onClick={openModal} className="ml-2 text-blue-500 md:hidden">
+          <Info size={20} /> {/* Info icon from lucide-react */}
+        </button>
+      </div>
+
+      {/* DaisyUI Modal for more information */}
+      {isModalOpen && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h2 className="text-2xl font-bold mb-4">How to Mark Attendance</h2>
+            <p>
+              To mark your attendance, click on the date you wish to mark. 
+              If it's today's date, your attendance will be successfully marked.
+              If you're unable to mark attendance or have any issues, please contact the admin.
+            </p>
+            <div className="modal-action">
+              <button onClick={closeModal} className="btn btn-primary">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="bg-white text-black p-5 rounded-lg shadow-lg">
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            // events={events}  // Ensure events are passed for the calendar
+            // events={events} 
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
