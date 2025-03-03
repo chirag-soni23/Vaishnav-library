@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Book,LogOut, Settings, User, User2, Users } from "lucide-react";
+import {Library,LogOut, Settings, User, User2} from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Book className="w-5 h-5 text-primary" />
+              <Library className="w-5 h-5 text-primary" />
               </div>
               <h1 className="text-lg font-bold">Library Hub</h1>
             </Link>

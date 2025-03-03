@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Book, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Library, Lock, Mail } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserData } from "../context/UserContext";
 import toast from "react-hot-toast";
@@ -36,7 +36,7 @@ const Login = () => {
         <div className="text-center mb-8">
           <div className="flex flex-col items-center gap-2 group">
             <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Book className="size-6 text-primary" />
+              <Library className="size-6 text-primary" />
             </div>
             <h1 className="text-2xl font-bold mt-2">Login to Your Account</h1>
             <p className="text-base-content/60">Access your account</p>
