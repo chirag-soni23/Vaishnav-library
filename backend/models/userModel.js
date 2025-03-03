@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true, 
         unique: true, 
-        match: [/^\d{10}$/, "Invalid mobile number"] // 10-digit number validation
+        match: [/^\d{10}$/, "Invalid mobile number"] 
     },
     dateOfBirth: { 
         type: Date, 
@@ -33,17 +33,7 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpire: Date
 }, { timestamps: true });
 
-// Middleware to add +91 to mobile number before saving
-userSchema.pre("save", async function(next) {
-    if (!this.isModified("mobileNumber")) return next();
 
-    // Check if the mobile number starts with +91, if not, add it
-    if (!this.mobileNumber.startsWith('+91')) {
-        this.mobileNumber = '+91' + this.mobileNumber;
-    }
-
-    next();
-});
 
 // Password Hash Middleware
 userSchema.pre("save", async function (next) {

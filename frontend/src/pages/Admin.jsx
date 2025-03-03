@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AttendanceData } from '../context/AttendanceContext';
 import { UserData } from '../context/UserContext';
 
 const Admin = () => {
-  const { allUsers, deleteUser, editProfile } = UserData(); 
+  const { allUsers, deleteUser, editProfile } = UserData();
   const { attendanceRecords, deleteAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
@@ -24,10 +24,13 @@ const Admin = () => {
   };
 
   const handleRoleChange = (userId, newRole) => {
-    editProfile({ role: newRole, userId });
-    window.location.reload();
+    // Only proceed if the role is different from the current role
+    const userToUpdate = allUsers.find((user) => user._id === userId);
+    if (userToUpdate && userToUpdate.role !== newRole) {
+      editProfile({ userId, newRole });  // Update the user role
+    }
   };
-  
+
   // Filtered users based on search query
   const filteredUsers = allUsers.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
