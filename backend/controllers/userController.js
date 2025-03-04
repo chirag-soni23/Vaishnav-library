@@ -44,7 +44,7 @@ export const loginUser = tryCatch(async (req, res) => {
     // Generate JWT token and store it in Redis with a TTL (e.g., 1 hour)
     const token = generateToken(user._id, res);
     const redisKey = `auth_token:${user._id}`;
-    
+
     await redisClient.set(redisKey, token, 'EX', 3600); // Store token for 1 hour
 
     res.status(200).json({ message: "User logged in successfully!" });
@@ -60,7 +60,7 @@ export const myProfile = tryCatch(async (req, res) => {
 export const logout = tryCatch(async (req, res) => {
     const userId = req.user._id;
     const redisKey = `auth_token:${userId}`;
-    
+
     // Delete the user's JWT token from Redis when logging out
     await redisClient.del(redisKey);
 
@@ -86,7 +86,7 @@ export const editUser = tryCatch(async (req, res) => {
     user.email = email || user.email;
     user.mobileNumber = mobileNumber || user.mobileNumber;
     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
-    user.role = role || user.role; 
+    user.role = role || user.role;
 
     await user.save();
 
@@ -115,26 +115,26 @@ export const getAllUsers = tryCatch(async (req, res) => {
 export const forgotPassword = tryCatch(async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
-  
+
     if (!user) {
-      return res.status(404).json({ message: "User not found!" });
+        return res.status(404).json({ message: "User not found!" });
     }
-  
+
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
-  
+
     const resetUrl = `${req.protocol}://${req.get("host")}/resetpassword/${resetToken}`;
     const message = `You requested a password reset. Click the link to reset your password: \n\n ${resetUrl}`;
-  
+
     try {
-      await sendEmail({ email: user.email, subject: "Password Reset Request", message });
-      res.status(200).json({ message: "Reset password link sent to email!" });
+        await sendEmail({ email: user.email, subject: "Password Reset Request", message });
+        res.status(200).json({ message: "Reset password link sent to email!" });
     } catch (error) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save({ validateBeforeSave: false });
-  
-      res.status(500).json({ message: "Email could not be sent" });
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        res.status(500).json({ message: "Email could not be sent" });
     }
 });
 
@@ -142,21 +142,21 @@ export const forgotPassword = tryCatch(async (req, res) => {
 export const resetPassword = tryCatch(async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
-  
+
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const user = await User.findOne({
-      resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: Date.now() },
+        resetPasswordToken: hashedToken,
+        resetPasswordExpire: { $gt: Date.now() },
     });
-  
+
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
+        return res.status(400).json({ message: "Invalid or expired token" });
     }
-  
-    user.password = password; 
+
+    user.password = password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-  
+
     res.status(200).json({ message: "Password reset successful!" });
 });

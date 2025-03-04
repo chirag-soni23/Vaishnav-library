@@ -5,7 +5,7 @@ import tryCatch from "../utils/tryCatch.js";
 // Mark Attendance
 export const markAttendance = tryCatch(async (req, res) => {
     const { studentId, status } = req.body;
-    const date = new Date().toISOString().split("T")[0]; 
+    const date = new Date().toISOString().split("T")[0];
 
     const student = await User.findById(studentId);
     if (!student) {

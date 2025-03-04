@@ -1,6 +1,6 @@
 import { Calendar, Loader2, Mail, Pencil, Phone, User } from "lucide-react";
 import { UserData } from "../context/UserContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Profile = () => {
   const { user, btnLoading, editProfile } = UserData();
@@ -12,13 +12,28 @@ const Profile = () => {
     dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
   });
 
+  useEffect(() => {
+    setFormData({
+      name: user?.name || "",
+      email: user?.email || "",
+      mobileNumber: user?.mobileNumber || "",
+      dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
+    });
+  }, [user]);
+
   const handleFieldChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const saveChanges = async () => {
-    await editProfile(formData);
-    setEditField(null);
+    await editProfile({
+      userId: user?._id,
+      name: formData.name,
+      email: formData.email,
+      mobileNumber: formData.mobileNumber,
+      dateOfBirth: formData.dateOfBirth,
+    });
+    setEditField(null); 
   };
 
   return (
@@ -117,17 +132,27 @@ const ProfileField = ({
             onChange={handleFieldChange}
             className="px-4 py-2 bg-base-200 rounded-lg border flex-grow"
           />
-          <button disabled={btnLoading} onClick={saveChanges} className="btn btn-success">
+          <button
+            disabled={btnLoading}
+            onClick={saveChanges}
+            className="btn btn-success"
+          >
             {btnLoading ? <Loader2 className="animate-spin" /> : "Save"}
           </button>
-          <button onClick={() => setEditField(null)} className="btn btn-warning">
+          <button
+            onClick={() => setEditField(null)}
+            className="btn btn-warning"
+          >
             Cancel
           </button>
         </div>
       ) : (
         <p className="flex items-center justify-between px-4 py-2.5 bg-base-200 rounded-lg border">
           {value || "N/A"}
-          <Pencil className="w-4 h-4 cursor-pointer" onClick={() => setEditField(name)} />
+          <Pencil
+            className="w-4 h-4 cursor-pointer"
+            onClick={() => setEditField(name)}
+          />
         </p>
       )}
     </div>
