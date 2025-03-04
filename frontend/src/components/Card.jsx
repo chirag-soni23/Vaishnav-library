@@ -39,7 +39,12 @@ const Card = () => {
       </div>
 
       {selectedItem && (
-        <dialog id="my_modal" className="modal modal-open">
+        <dialog
+          id="my_modal"
+          className="modal modal-open transition-all duration-300 ease-in-out opacity-0"
+          open
+          style={{ opacity: selectedItem ? 1 : 0 }}
+        >
           <div className="modal-box">
             <h2 className="text-xl font-bold">{selectedItem.name}</h2>
             <p className="py-4">{selectedItem.description}</p>
