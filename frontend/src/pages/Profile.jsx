@@ -124,7 +124,7 @@ const ProfileField = ({
         {label}
       </div>
       {editField === name ? (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             type={type}
             name={name}
@@ -135,13 +135,13 @@ const ProfileField = ({
           <button
             disabled={btnLoading}
             onClick={saveChanges}
-            className="btn btn-success"
+            className="btn btn-success flex-shrink-0"
           >
             {btnLoading ? <Loader2 className="animate-spin" /> : "Save"}
           </button>
           <button
             onClick={() => setEditField(null)}
-            className="btn btn-warning"
+            className="btn btn-warning flex-shrink-0"
           >
             Cancel
           </button>
