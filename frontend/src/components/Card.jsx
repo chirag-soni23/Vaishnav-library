@@ -25,7 +25,7 @@ const Card = () => {
             <img
               src={item.image}
               alt={item.name}
-              className="w-64 h-40 object-cover rounded-md"
+              className="w-80 h-44 object-cover rounded-md"
             />
             <p className="mt-2 font-semibold text-lg">{item.name}</p>
             <button
