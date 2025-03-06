@@ -3,8 +3,8 @@ import { AttendanceData } from '../context/AttendanceContext';
 import { UserData } from '../context/UserContext';
 
 const Admin = () => {
-  const { allUsers, deleteUser, editProfile } = UserData();
-  const { attendanceRecords, deleteAttendance } = AttendanceData();
+  const { allUsers, deleteUser, editProfile, deleteAllUsers } = UserData();
+  const { attendanceRecords, deleteAttendance, deleteAllAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,13 +24,10 @@ const Admin = () => {
   };
 
   const handleRoleChange = (userId, newRole) => {
-    // Only proceed if the role is different from the current role
     const userToUpdate = allUsers.find((user) => user._id === userId);
     if (userToUpdate && userToUpdate.role !== newRole) {
-      // Update the user role using editProfile
       editProfile({ userId, role: newRole })
         .then(() => {
-          // After updating, reflect the change in the local state
           const updatedUsers = allUsers.map((user) =>
             user._id === userId ? { ...user, role: newRole } : user
           );
@@ -42,15 +39,28 @@ const Admin = () => {
     }
   };
 
-  // Filtered users based on search query
+  // Filtered users and attendance records based on search query
   const filteredUsers = allUsers.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Filtered attendance records based on search query
   const filteredAttendance = attendanceRecords.filter(record =>
     record.student?.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDeleteAllUsers = () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete all users?");
+    if (confirmDelete) {
+      deleteAllUsers();
+    }
+  };
+
+  const handleDeleteAllAttendance = () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete all attendance records?");
+    if (confirmDelete) {
+      deleteAllAttendance();
+    }
+  };
 
   return (
     <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8">
@@ -81,103 +91,127 @@ const Admin = () => {
         </button>
       </div>
 
-      {/* Users Table */}
+      {/* Users Section */}
       {activeTab === 'users' && (
-        <div className="overflow-x-auto mt-4">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Date of Birth</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user, index) => (
-                  <tr key={user._id}>
-                    <th>{index + 1}</th>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.mobileNumber}</td>
-                    <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td>
-                    <td className="capitalize">{user.role}</td>
-                    <td>
-                      {/* Dropdown for role selection */}
-                      <select
-                        className="bg-gray-200 text-black px-3 py-1 rounded w-full sm:w-auto"
-                        value={user.role}
-                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                      >
-                        <option value="user">{user.role}</option>
-                        <option value="user">user</option>
-                        <option value="member">member</option>
-                      </select>
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto"
-                        onClick={() => handleDeleteUser(user._id)} // Call handleDeleteUser
-                      >
-                        Delete
-                      </button>
+        <div>
+          {/* Delete All Users Button */}
+          <div className="mb-4">
+            <button
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+              onClick={handleDeleteAllUsers}
+            >
+              Delete All Users
+            </button>
+          </div>
+
+          <div className="overflow-x-auto mt-4">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Mobile Number</th>
+                  <th>Date of Birth</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user, index) => (
+                    <tr key={user._id}>
+                      <th>{index + 1}</th>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td>{user.mobileNumber}</td>
+                      <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td>
+                      <td className="capitalize">{user.role}</td>
+                      <td>
+                        {/* Dropdown for role selection */}
+                        <select
+                          className="bg-gray-200 text-black px-3 py-1 rounded w-full sm:w-auto"
+                          value={user.role}
+                          onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                        >
+                          <option value="user">{user.role}</option>
+                          <option value="user">user</option>
+                          <option value="member">member</option>
+                        </select>
+                        <button
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 mt-2 sm:mt-0 sm:ml-2 w-full sm:w-auto"
+                          onClick={() => handleDeleteUser(user._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center">
+                      No Users Found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="text-center">
-                    No Users Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {/* Attendance Table */}
+      {/* Attendance Section */}
       {activeTab === 'attendance' && (
-        <div className="overflow-x-auto mt-4">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredAttendance.length > 0 ? (
-                filteredAttendance.map((record, index) => (
-                  <tr key={record._id}>
-                    <th>{index + 1}</th>
-                    <td>{record.student.name}</td>
-                    <td>{new Date(record.date).toLocaleDateString()}</td>
-                    <td>{record.status}</td>
-                    <td>
-                      <button
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                        onClick={() => handleDeleteAttendance(record._id)} // Call handleDeleteAttendance
-                      >
-                        Delete
-                      </button>
+        <div>
+          {/* Delete All Attendance Records Button */}
+          {/* <div className="mb-4">
+            <button
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+              onClick={handleDeleteAllAttendance}
+            >
+              Delete All Attendance Records
+            </button>
+          </div> */}
+
+          <div className="overflow-x-auto mt-4">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAttendance.length > 0 ? (
+                  filteredAttendance.map((record, index) => (
+                    <tr key={record._id}>
+                      <th>{index + 1}</th>
+                      <td>{record.student.name}</td>
+                      <td>{new Date(record.date).toLocaleDateString()}</td>
+                      <td>{record.status}</td>
+                      <td>
+                        <button
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+                          onClick={() => handleDeleteAttendance(record._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center">
+                      No Attendance Records Found
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center">
-                    No Attendance Records Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

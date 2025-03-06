@@ -101,49 +101,45 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    // Edit Profile
-async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
-    setBtnLoading(true);
-    try {
-        // Only admins can update user roles
-        if (role && user?.role !== 'admin') {
-            toast.error("Only admins can update user roles.");
-            return;
-        }
+    async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
+        setBtnLoading(true);
+        try {
+            // Only admins can update user roles
+            if (role && user?.role !== 'admin') {
+                toast.error("Only admins can update user roles.");
+                return;
+            }
 
-        const { data } = await axios.patch(`/api/user/users/${userId}`, {
-            name,
-            email,
-            mobileNumber,
-            dateOfBirth,
-            role
-        });
-
-        toast.success(data.message);
-
-        // Update the user's state after profile change
-        if (data.user._id === user?._id) {
-            setUser({
-                ...user,
-                name: data.user.name,
-                email: data.user.email,
-                mobileNumber: data.user.mobileNumber,
-                dateOfBirth: data.user.dateOfBirth,
-                role: data.user.role
+            const { data } = await axios.patch(`/api/user/users/${userId}`, {
+                name,
+                email,
+                mobileNumber,
+                dateOfBirth,
+                role
             });
+
+            toast.success(data.message);
+
+            // Update the user's state after profile change
+            if (data.user._id === user?._id) {
+                setUser({
+                    ...user,
+                    name: data.user.name,
+                    email: data.user.email,
+                    mobileNumber: data.user.mobileNumber,
+                    dateOfBirth: data.user.dateOfBirth,
+                    role: data.user.role
+                });
+            }
+
+            // If you're updating another user's profile (as admin), update the allUsers state
+            setAllUsers(prev => prev.map(u => (u._id === userId ? data.user : u)));
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to update profile.");
+        } finally {
+            setBtnLoading(false);
         }
-
-        // If you're updating another user's profile (as admin), update the allUsers state
-        setAllUsers(prev => prev.map(u => (u._id === userId ? data.user : u)));
-    } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to update profile.");
-    } finally {
-        setBtnLoading(false);
     }
-}
-
-
-
 
     // **Delete User (Admin Only)**
     async function deleteUser(userId) {
@@ -155,6 +151,20 @@ async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirt
             setAllUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to delete user.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+    // **Delete All Users (Admin Only)**
+    async function deleteAllUsers() {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.delete("/api/user/deleteall");
+            toast.success(data.message);
+            setAllUsers([]);  // Clear the list of all users since they are deleted
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to delete all users.");
         } finally {
             setBtnLoading(false);
         }
@@ -195,6 +205,7 @@ async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirt
                 logout,
                 fetchAllUsers,
                 deleteUser,
+                deleteAllUsers,  // Added deleteAllUsers here
                 forgotPassword,
                 resetPassword,
                 btnLoading,

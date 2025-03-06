@@ -8,7 +8,8 @@ import {
     loginUser, 
     logout, 
     myProfile, 
-    registerUser 
+    registerUser, 
+    deleteAllUsers
 } from '../controllers/userController.js';
 import { isAuth } from '../middlewares/isAuth.js';
 
@@ -20,6 +21,7 @@ router.get("/me", isAuth, myProfile);
 router.post("/logout", isAuth, logout);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:token", resetPassword);
+router.delete("/deleteall",isAuth,deleteAllUsers);
 
 // Admin Routes
 router.get("/users", isAuth, getAllUsers);

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { User } from "../models/userModel.js";
 import sendEmail from "../utils/sendEmail.js";
-import redisClient from "../services/redis.service.js"; // Assuming redisConfig.js is the file where Redis client is configured
+import redisClient from "../services/redis.service.js"; 
 
 // Register User
 export const registerUser = tryCatch(async (req, res) => {
@@ -40,12 +40,10 @@ export const loginUser = tryCatch(async (req, res) => {
     if (!isMatch) {
         return res.status(400).json({ message: "Invalid email or password" });
     }
-
-    // Generate JWT token and store it in Redis with a TTL (e.g., 1 hour)
     const token = generateToken(user._id, res);
     const redisKey = `auth_token:${user._id}`;
 
-    await redisClient.set(redisKey, token, 'EX', 3600); // Store token for 1 hour
+    await redisClient.set(redisKey, token, 'EX', 3600); 
 
     res.status(200).json({ message: "User logged in successfully!" });
 });
@@ -60,8 +58,6 @@ export const myProfile = tryCatch(async (req, res) => {
 export const logout = tryCatch(async (req, res) => {
     const userId = req.user._id;
     const redisKey = `auth_token:${userId}`;
-
-    // Delete the user's JWT token from Redis when logging out
     await redisClient.del(redisKey);
 
     res.cookie("token", "", { maxAge: 0 });
@@ -104,6 +100,17 @@ export const deleteUser = tryCatch(async (req, res) => {
     await user.deleteOne();
     res.status(200).json({ message: "User deleted successfully!" });
 });
+
+// Delete All Users
+export const deleteAllUsers = tryCatch(async (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: "Access denied! Admins only." });
+    }
+
+    const result = await User.deleteMany({});
+    res.status(200).json({ message: "All users deleted successfully!", deletedCount: result.deletedCount });
+});
+
 
 // Get All Users
 export const getAllUsers = tryCatch(async (req, res) => {
