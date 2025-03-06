@@ -126,7 +126,14 @@ const Footer = () => {
       </div>
 
       <div className="mt-6 text-white text-center">
-        <p className="text-sm">Created by Sanjay © {new Date().getFullYear()}</p>
+        <p className="text-sm">Created by <a
+  href="https://www.instagram.com/sanjuuu_x18"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-sm hover:underline"
+>
+  Sanjay
+</a> © {new Date().getFullYear()}</p>
       </div>
 
       {/* DaisyUI Modal */}
