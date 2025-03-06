@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Eye, EyeOff, Loader2, Lock, Mail, Phone, User, Calendar, Library } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserData } from "../context/UserContext.jsx";
+import toast from 'react-hot-toast';
 
 const Register = () => {
-  const { registerUser, btnLoading } = UserData(); 
+  const { registerUser, btnLoading } = UserData();
   const navigate = useNavigate();
 
   // Form states
@@ -18,8 +19,18 @@ const Register = () => {
   // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const trimmedName = name.trim();
+    const nameParts = trimmedName.split(/\s+/);
+
+    if (nameParts.length < 2) {
+      toast.error("Full name must contain at least a first and last name.");
+      return;
+    }
+
     await registerUser(name, email, password, mobileNumber, dateOfBirth, navigate);
   };
+
 
   return (
     <div className="min-h-screen">
@@ -87,6 +98,7 @@ const Register = () => {
                   <Phone className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  maxLength={10}
                   type="text"
                   className="input input-bordered w-full pl-10"
                   placeholder="123-456-7890"
