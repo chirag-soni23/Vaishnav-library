@@ -14,23 +14,23 @@ import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
   const { isAuth, loading } = UserData();
-  const {theme} = useThemeStore()
+  const { theme } = useThemeStore()
 
   if (loading) return <Loading />
 
   return (
     <BrowserRouter>
-    <div data-theme={theme}>
-      {isAuth && <Navbar />}
-      <Routes>
-        <Route path="/" element={isAuth ? <Home /> : <Login />} />
-        <Route path="/settings" element={isAuth ? <Setting /> : <Login />} />
-        <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
-        <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={isAuth ? <Home /> : <Login />} />
-        <Route path="/resetpassword/:token" element={<ResetPassword />} />
-      </Routes>
+      <div data-theme={theme}>
+        {isAuth && <Navbar />}
+        <Routes>
+          <Route path="/" element={isAuth ? <Home /> : <Login />} />
+          <Route path="/settings" element={isAuth ? <Setting /> : <Login />} />
+          <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
+          <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={isAuth ? <Home /> : <Login />} />
+          <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );

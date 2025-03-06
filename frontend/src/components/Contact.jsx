@@ -6,11 +6,11 @@ const Contact = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
 
     try {
       const response = await axios.post('/api/contact/send-email', {
@@ -72,7 +72,7 @@ const Contact = () => {
         <button
           type="submit"
           className="btn btn-primary w-full"
-          disabled={isLoading} 
+          disabled={isLoading}
         >
           {isLoading ? 'Sending...' : 'Send Message'}
         </button>

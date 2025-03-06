@@ -39,7 +39,6 @@ const Admin = () => {
     }
   };
 
-  // Filtered users and attendance records based on search query
   const filteredUsers = allUsers.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );

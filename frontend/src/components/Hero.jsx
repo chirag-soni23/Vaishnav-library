@@ -5,7 +5,7 @@ import book from "../assets/book.png";
 import toast from "react-hot-toast";
 
 const Hero = () => {
-  function newFeature(){
+  function newFeature() {
     toast.error("New Feature coming soon!");
   }
   return (
@@ -22,7 +22,7 @@ const Hero = () => {
         <p className="text-lg sm:text-xl mb-6">
           Discover a world of knowledge with thousands of books, journals, and research materials.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <Link onClick={newFeature} to="/" className="btn btn-primary flex items-center gap-2">
             <BookOpen className="size-5" /> Browse Books
@@ -32,7 +32,7 @@ const Hero = () => {
           </Link>
         </div>
       </div>
-      
+
       <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
         <img src={book} alt="Library" className="w-full max-w-md md:max-w-lg h-auto rounded-lg shadow-lg" />
       </div>

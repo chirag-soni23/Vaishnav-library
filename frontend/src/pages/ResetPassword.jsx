@@ -2,16 +2,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Eye, EyeOff } from 'lucide-react'; // Importing the icons
+import { Eye, EyeOff } from 'lucide-react';
 
 const ResetPassword = () => {
-    const { token } = useParams(); // Get the token from the URL
+    const { token } = useParams();
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [btnLoading, setBtnLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false); // State for New Password visibility
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for Confirm Password visibility
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +24,7 @@ const ResetPassword = () => {
         try {
             const { data } = await axios.put(`/api/user/resetpassword/${token}`, { password });
             toast.success(data.message);
-            navigate('/login'); // Redirect to login page after successful reset
+            navigate('/login');
         } catch (error) {
             toast.error(error.response?.data?.message || "Password reset failed.");
         } finally {
@@ -46,7 +46,7 @@ const ResetPassword = () => {
                         </label>
                         <div className="relative">
                             <input
-                                type={showPassword ? 'text' : 'password'} // Toggle between text and password
+                                type={showPassword ? 'text' : 'password'}
                                 className="input input-bordered w-full"
                                 placeholder="••••••••"
                                 value={password}
@@ -74,7 +74,7 @@ const ResetPassword = () => {
                         </label>
                         <div className="relative">
                             <input
-                                type={showConfirmPassword ? 'text' : 'password'} // Toggle between text and password
+                                type={showConfirmPassword ? 'text' : 'password'}
                                 className="input input-bordered w-full"
                                 placeholder="••••••••"
                                 value={confirmPassword}

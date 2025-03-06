@@ -33,7 +33,7 @@ const Profile = () => {
       mobileNumber: formData.mobileNumber,
       dateOfBirth: formData.dateOfBirth,
     });
-    setEditField(null); 
+    setEditField(null);
   };
 
   return (

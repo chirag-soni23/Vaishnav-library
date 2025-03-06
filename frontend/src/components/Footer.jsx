@@ -4,8 +4,8 @@ import sir from '../assets/sir.jpg';
 
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');     
-  const [modalContent, setModalContent] = useState('');  
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalContent, setModalContent] = useState('');
 
   const openModal = (title, content) => {
     setModalTitle(title);
@@ -16,7 +16,7 @@ const Footer = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  
+
   const privacyPolicyContent = (
     <div>
       <p className="mt-2">At Nirmal's website, we respect your privacy. This Privacy Policy outlines the information we collect from you and how we use it.</p>
@@ -127,16 +127,15 @@ const Footer = () => {
 
       <div className="mt-6 text-white text-center">
         <p className="text-sm">Created by <a
-  href="https://www.instagram.com/sanjuuu_x18"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-sm hover:underline"
->
-  Sanjay
-</a> © {new Date().getFullYear()}</p>
+          href="https://www.instagram.com/sanjuuu_x18"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm hover:underline"
+        >
+          Sanjay
+        </a> © {new Date().getFullYear()}</p>
       </div>
 
-      {/* DaisyUI Modal */}
       {isModalOpen && (
         <div className="modal modal-open">
           <div className="modal-box">

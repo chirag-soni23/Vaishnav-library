@@ -5,7 +5,7 @@ const Video = () => {
   return (
     <div className="mt-10 video-container h-full w-full">
       <video
-        className="fullscreen-video w-full h-full opacity-2" 
+        className="fullscreen-video w-full h-full opacity-2"
         autoPlay
         loop
         muted

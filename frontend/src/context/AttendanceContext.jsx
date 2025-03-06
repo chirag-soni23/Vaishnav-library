@@ -60,9 +60,9 @@ export const AttendanceProvider = ({ children }) => {
             setLoading(false);
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchAllAttendance()
-    },[]);
+    }, []);
 
     // Delete Attendance Record
     async function deleteAttendance(id) {

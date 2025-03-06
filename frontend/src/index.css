@@ -1,19 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
-    overflow-x: hidden;
-  }
- 
-  .carousel {
-    overflow-x: auto;
-    display: flex;
-    flex-wrap: nowrap;
-  }
-  
-  
-  .carousel-item {
-    flex-shrink: 0; 
-    max-width: 100%; 
-  }
-  
+  overflow-x: hidden;
+}
+
+.carousel {
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+
+.carousel-item {
+  flex-shrink: 0;
+  max-width: 100%;
+}

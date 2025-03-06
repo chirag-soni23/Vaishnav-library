@@ -33,7 +33,7 @@ const Images = () => {
 
   return (
     <>
-       <h1 className="text-3xl font-bold text-center mb-5 mt-10">About Our Library</h1>
+      <h1 className="text-3xl font-bold text-center mb-5 mt-10">About Our Library</h1>
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-base-100 shadow-xl">
         {libraryImages.slice(0, visibleCount).map((img) => (
           <figure key={img.id} className="w-full h-auto">

@@ -36,29 +36,6 @@ const Setting = () => {
             </button>
           ))}
         </div>
-
-        {/* Preview Section */}
-        {/* <div className="space-y-4 mt-6">
-          <h3 className="text-lg font-semibold">Preview</h3>
-          <div className="card lg:card-side bg-base-100 shadow-xl">
-            <div className="flex flex-col gap-2 items-center p-4">
-              <img
-                className="w-24 h-24 rounded-full"
-                src={user?.image?.url || avatar} 
-                alt="User Avatar"
-              />
-              <h1 className="text-lg font-bold">{user?.name || 'User Name'}</h1>
-              <p className="text-base text-gray-500">{user?.email || 'user@example.com'}</p>
-            </div>
-            <div className="card-body">
-              <h2 className="card-title">Current Balance</h2>
-              <p>₹ {user?.balance ?? '0.00'}</p>
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary">Deposit</button>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

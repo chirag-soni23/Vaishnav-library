@@ -3,32 +3,36 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true, trim: true },
-    email: { 
-        type: String, 
-        required: true, 
-        unique: true, 
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
         lowercase: true,
         match: [/^\S+@\S+\.\S+$/, "Invalid email format"]
     },
-    mobileNumber: { 
-        type: String, 
-        required: true, 
-        unique: true, 
-        match: [/^\d{10}$/, "Invalid mobile number"] 
+    mobileNumber: {
+        type: String,
+        required: true,
+        unique: true,
+        match: [/^\d{10}$/, "Invalid mobile number"]
     },
-    dateOfBirth: { 
-        type: Date, 
+    dateOfBirth: {
+        type: Date,
         required: true,
         validate: {
-            validator: function(value) {
+            validator: function (value) {
                 return value <= new Date(); // DOB should not be in the future
             },
             message: "Date of birth cannot be in the future"
         }
     },
     password: { type: String, required: true, minlength: 6 },
-    role: { type: String, enum: ['member', 'admin','user'], default: 'user' },
+    role: { type: String, enum: ['member', 'admin', 'user'], default: 'user' },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 }, { timestamps: true });

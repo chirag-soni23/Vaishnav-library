@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import toast, { Toaster } from "react-hot-toast";
 import { AttendanceData } from "../context/AttendanceContext";
 import { UserData } from "../context/UserContext";
-import { Info } from "lucide-react"; 
+import { Info } from "lucide-react";
 const localizer = momentLocalizer(moment);
 
 export default function Attendance() {
@@ -13,7 +13,7 @@ export default function Attendance() {
   const { user } = UserData();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
@@ -56,7 +56,7 @@ export default function Attendance() {
       } else if (alreadyMarked) {
         toast.error("Attendance already marked!");
       } else {
-        setLoading(true);  
+        setLoading(true);
         await markAttendance(user._id);
         fetchTodayAttendance();
       }
@@ -86,14 +86,12 @@ export default function Attendance() {
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
-       
-        {/* Info icon visible on both mobile and desktop */}
+
         <button onClick={openModal} className="ml-2 text-blue-500">
-          <Info size={20} /> {/* Info icon from lucide-react */}
+          <Info size={20} />
         </button>
       </div>
 
-      {/* DaisyUI Modal for more information */}
       {isModalOpen && (
         <div className="modal modal-open">
           <div className="modal-box">
@@ -123,7 +121,7 @@ export default function Attendance() {
             onSelectEvent={handleSelectEvent}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: "100%", width: "100%" }}  
+            style={{ height: "100%", width: "100%" }}
           />
         </div>
       </div>

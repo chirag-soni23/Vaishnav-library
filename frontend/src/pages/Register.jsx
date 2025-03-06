@@ -8,7 +8,6 @@ const Register = () => {
   const { registerUser, btnLoading } = UserData();
   const navigate = useNavigate();
 
-  // Form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -16,7 +15,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 

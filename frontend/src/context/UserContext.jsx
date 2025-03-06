@@ -120,7 +120,6 @@ export const UserProvider = ({ children }) => {
 
             toast.success(data.message);
 
-            // Update the user's state after profile change
             if (data.user._id === user?._id) {
                 setUser({
                     ...user,
@@ -132,7 +131,6 @@ export const UserProvider = ({ children }) => {
                 });
             }
 
-            // If you're updating another user's profile (as admin), update the allUsers state
             setAllUsers(prev => prev.map(u => (u._id === userId ? data.user : u)));
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to update profile.");
@@ -141,7 +139,7 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    // **Delete User (Admin Only)**
+    // Delete User (Admin Only)
     async function deleteUser(userId) {
         setBtnLoading(true);
         try {
@@ -156,13 +154,13 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    // **Delete All Users (Admin Only)**
+    // Delete All Users (Admin Only)
     async function deleteAllUsers() {
         setBtnLoading(true);
         try {
             const { data } = await axios.delete("/api/user/deleteall");
             toast.success(data.message);
-            setAllUsers([]);  // Clear the list of all users since they are deleted
+            setAllUsers([]);
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to delete all users.");
         } finally {
@@ -205,7 +203,7 @@ export const UserProvider = ({ children }) => {
                 logout,
                 fetchAllUsers,
                 deleteUser,
-                deleteAllUsers,  // Added deleteAllUsers here
+                deleteAllUsers,
                 forgotPassword,
                 resetPassword,
                 btnLoading,

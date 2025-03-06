@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import {Library,LogOut, Settings, User, User2} from "lucide-react";
+import { Library, LogOut, Settings, User, User2 } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
-  const {logout,user} = UserData();
+  const { logout, user } = UserData();
   const navigate = useNavigate()
-  function logoutHandler(){
+  function logoutHandler() {
     logout()
     navigate('/login')
 
@@ -20,7 +20,7 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Library className="w-5 h-5 text-primary" />
+                <Library className="w-5 h-5 text-primary" />
               </div>
               <h1 className="text-lg font-bold">Library Hub</h1>
             </Link>
@@ -29,16 +29,16 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             {/* admin */}
             {user.role == "admin" ?
-            <Link
-              to="/admin"
-              className={`
+              <Link
+                to="/admin"
+                className={`
               btn btn-sm gap-2 transition-colors
               
               `}
-            >
-              <User2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Admin</span>
-            </Link>:""}
+              >
+                <User2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Admin</span>
+              </Link> : ""}
 
             {/* settings */}
             <Link
@@ -65,9 +65,9 @@ const Navbar = () => {
             </Link>
 
             <button className="flex gap-2 items-center" onClick={logoutHandler}>
-                  <LogOut className="size-5" />
-                  <span className="hidden sm:inline">Logout</span>
-                </button>
+              <LogOut className="size-5" />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
 
           </div>
         </div>
