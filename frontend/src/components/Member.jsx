@@ -7,7 +7,7 @@ const Member = () => {
   const { allUsers, deleteProfilePicture, user } = UserData();
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
 
   const members = allUsers?.filter(
     (user) =>
@@ -27,8 +27,7 @@ const Member = () => {
     if (window.confirm("Are you sure you want to delete this profile picture?")) {
       setIsDeleting(true);
       try {
-        await deleteProfilePicture(userId); 
-        toast.success("Profile picture deleted successfully.");
+        await deleteProfilePicture(userId);
       } catch (error) {
         toast.error("Failed to delete profile picture.");
       } finally {
@@ -38,20 +37,20 @@ const Member = () => {
   };
 
   return (
-    <div className="overflow-x-auto mt-16">
+    <div className="overflow-x-auto mt-16 px-4 sm:px-8">
       {/* Search Input */}
-      <div className="mb-4 mt-10 flex justify-center">
+      <div className="mb-4 mt-10 flex justify-start">
         <input
           type="text"
           placeholder="Search by name..."
-          className="input input-bordered max-w-xs sm:max-w-md md:max-w-lg w-full"
+          className="input input-bordered w-full max-w-xs sm:max-w-md md:max-w-lg"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} 
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
       {members?.length > 0 ? (
-        <table className="table">
+        <table className="table w-full">
           {/* Table Head */}
           <thead>
             <tr>
@@ -91,7 +90,9 @@ const Member = () => {
                 <td className={`${user.role === "admin" ? "" : "hidden"}`}>
                   {member.profilePicture?.url && (
                     <button
-                      className="btn btn-sm btn-danger mt-2"
+                      className={`btn btn-sm sm:btn-md lg:btn-lg mt-2 whitespace-nowrap ${
+                        isDeleting ? "btn-disabled" : "btn-danger"
+                      }`}
                       onClick={() => handleDeleteClick(member._id)}
                       disabled={isDeleting}
                     >
@@ -113,7 +114,7 @@ const Member = () => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={() => setSelectedUser(null)}
         >
-          <div className="p-4 rounded-lg shadow-lg max-w-sm relative">
+          <div className="p-4 rounded-lg shadow-lg max-w-sm sm:max-w-md md:max-w-lg relative">
             <button
               className="absolute top-2 right-2 rounded-full w-8 h-8 p-1 bg-slate-700 flex justify-center items-center"
               onClick={() => setSelectedUser(null)}

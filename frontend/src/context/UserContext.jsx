@@ -180,11 +180,11 @@ export const UserProvider = ({ children }) => {
         try {
             const { data } = await axios.delete(`/api/user/delete-profilePic/${userId}`);
             toast.success(data.message);
-
             setUser(prevUser => ({
                 ...prevUser,
                 profilePicture: null
             }));
+            window.location.reload();
         } catch (error) {
             toast.error(error.response?.data?.message || "Failed to delete profile picture.");
         } finally {
