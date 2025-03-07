@@ -14,9 +14,9 @@ dotenv.config();
 
 // cloudinary
 cloudinary.v2.config({
-  cloud_name:process.env.CLOUD_NAME,
-  api_key:process.env.CLOUD_API,
-  api_secret:process.env.CLOUD_SECRET
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API,
+  api_secret: process.env.CLOUD_SECRET
 })
 
 const app = express();
@@ -42,6 +42,7 @@ app.use(express.static(path.join(__dirname, "/frontend/dist")))
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
 })
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

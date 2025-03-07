@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserData } from '../context/UserContext';
+import {Cross} from "lucide-react";
 
 const Member = () => {
   const { allUsers } = UserData();
@@ -19,6 +20,7 @@ const Member = () => {
               <th>Mobile Number</th>
               <th>Date of Birth</th>
               <th>Role</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -42,8 +44,6 @@ const Member = () => {
                 <td>
                   <span className="badge badge-ghost badge-sm">{member.role}</span>
                 </td>
-                <td>
-                </td>
               </tr>
             ))}
           </tbody>
@@ -54,8 +54,14 @@ const Member = () => {
 
       {/* Profile Picture Popup */}
       {selectedUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onClick={() => setSelectedUser(null)}>
-          <div className=" p-4 rounded-lg shadow-lg max-w-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={() => setSelectedUser(null)}>
+          <div className="p-4 rounded-lg shadow-lg max-w-sm relative">
+            <button 
+              className="absolute top-2 right-2 rounded-full w-8 h-8 p-1 bg-slate-700 flex justify-center items-center" 
+              onClick={() => setSelectedUser(null)}
+            >
+              <Cross className='w-5 h-5 text-white rotate-45'/>              
+            </button>
             <img src={selectedUser.profilePicture.url} alt={selectedUser.name} className="w-full h-auto rounded-lg" />
             <p className="text-white text-center mt-2 font-bold">{selectedUser.name}</p>
           </div>
