@@ -16,10 +16,9 @@ const Member = () => {
       user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // If logged-in user exists in the filtered members list, move them to the top
   const sortedMembers = members?.sort((a, b) => {
-    if (a._id === user._id) return -1;  // Logged-in user goes to the top
-    if (b._id === user._id) return 1;   // Logged-in user goes to the top
+    if (a._id === user._id) return -1;
+    if (b._id === user._id) return 1;
     return 0;
   });
 
@@ -98,9 +97,8 @@ const Member = () => {
                 <td className={`${user.role === "admin" ? "" : "hidden"}`}>
                   {member.profilePicture?.url && (
                     <button
-                      className={`btn btn-sm sm:btn-md lg:btn-lg mt-2 whitespace-nowrap ${
-                        isDeleting ? "btn-disabled" : "btn-danger"
-                      }`}
+                      className={`btn btn-xs sm:btn-sm lg:btn-md mt-2 whitespace-nowrap ${isDeleting ? "btn-disabled" : "btn-danger"
+                        }`}
                       onClick={() => handleDeleteClick(member._id)}
                       disabled={isDeleting}
                     >
@@ -108,6 +106,7 @@ const Member = () => {
                     </button>
                   )}
                 </td>
+
               </tr>
             ))}
           </tbody>
