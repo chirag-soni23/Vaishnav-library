@@ -17,7 +17,7 @@ const Member = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Mobile Number</th>
+              {/* <th>Mobile Number</th> */}
               <th>Date of Birth</th>
               <th>Role</th>
               <th></th>
@@ -39,7 +39,7 @@ const Member = () => {
                   </div>
                 </td>
                 <td>{member.email}</td>
-                <td>{member.mobileNumber}</td>
+                {/* <td>{member.mobileNumber}</td> */}
                 <td>{new Date(member.dateOfBirth).toLocaleDateString()}</td>
                 <td>
                   <span className="badge badge-ghost badge-sm">{member.role}</span>
