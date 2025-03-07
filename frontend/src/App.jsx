@@ -11,6 +11,7 @@ import { useThemeStore } from "./context/useThemeStore";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import ResetPassword from "./pages/ResetPassword";
+import Member from "./components/Member";
 
 const App = () => {
   const { isAuth, loading } = UserData();
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/settings" element={isAuth ? <Setting /> : <Login />} />
           <Route path="/admin" element={isAuth ? <Admin /> : <Login />} />
           <Route path="/profile" element={isAuth ? <Profile /> : <Login />} />
+          <Route path="/members" element={isAuth ? <Member /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={isAuth ? <Home /> : <Login />} />
           <Route path="/resetpassword/:token" element={<ResetPassword />} />

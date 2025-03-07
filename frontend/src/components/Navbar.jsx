@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Library, LogOut, Settings, User, User2 } from "lucide-react";
+import { Library, LogOut, Settings, User, User2, Users } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Navbar = () => {
@@ -39,6 +39,18 @@ const Navbar = () => {
                 <User2 className="w-4 h-4" />
                 <span className="hidden sm:inline">Admin</span>
               </Link> : ""}
+
+            {/* members */}
+            <Link
+              to="/members"
+              className={`
+              btn btn-sm gap-2 transition-colors
+              
+              `}
+            >
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Members</span>
+            </Link>
 
             {/* settings */}
             <Link
