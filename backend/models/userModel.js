@@ -26,13 +26,25 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function (value) {
-                return value <= new Date(); // DOB should not be in the future
+                return value <= new Date();
             },
             message: "Date of birth cannot be in the future"
         }
     },
-    password: { type: String, required: true, minlength: 6 },
-    role: { type: String, enum: ['member', 'admin', 'user'], default: 'user' },
+    profilePicture: {
+        id: String,
+        url: String
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6
+    },
+    role: {
+        type: String,
+        enum: ['member', 'admin', 'user'],
+        default: 'user'
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 }, { timestamps: true });

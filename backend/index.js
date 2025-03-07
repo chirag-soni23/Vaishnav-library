@@ -8,8 +8,17 @@ import contactRoutes from './routes/contactRoutes.js';
 import path from "path";
 import cors from "cors";
 import compression from 'compression';
+import cloudinary from 'cloudinary';
 
 dotenv.config();
+
+// cloudinary
+cloudinary.v2.config({
+  cloud_name:process.env.CLOUD_NAME,
+  api_key:process.env.CLOUD_API,
+  api_secret:process.env.CLOUD_SECRET
+})
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

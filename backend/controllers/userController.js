@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { User } from "../models/userModel.js";
 import sendEmail from "../utils/sendEmail.js";
-import redisClient from "../services/redis.service.js"; 
+import redisClient from "../services/redis.service.js";
+import cloudinary from "cloudinary"; 
 
 // Register User
 export const registerUser = tryCatch(async (req, res) => {
@@ -167,3 +168,42 @@ export const resetPassword = tryCatch(async (req, res) => {
 
     res.status(200).json({ message: "Password reset successful!" });
 });
+
+// Update Profile Picture
+export const updateProfilePicture = tryCatch(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+    }
+
+    if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded!" });
+    }
+
+    // Delete old profile picture from Cloudinary
+    if (user.profilePicture && user.profilePicture.id) {
+        await cloudinary.v2.uploader.destroy(user.profilePicture.id);
+    }
+
+    // Upload new profile picture using upload_stream
+    const uploadStream = cloudinary.v2.uploader.upload_stream(
+        { folder: "profile_pictures", width: 500, height: 500, crop: "fill" },
+        async (error, result) => {
+            if (error) {
+                return res.status(500).json({ message: "Cloudinary upload failed", error });
+            }
+
+            user.profilePicture = {
+                id: result.public_id,
+                url: result.secure_url,
+            };
+
+            await user.save();
+            res.status(200).json({ message: "Profile picture updated successfully!", profilePicture: user.profilePicture });
+        }
+    );
+
+    uploadStream.end(req.file.buffer); // Send the buffer to Cloudinary
+});
+
+

@@ -9,9 +9,11 @@ import {
     logout,
     myProfile,
     registerUser,
-    deleteAllUsers
+    deleteAllUsers,
+    updateProfilePicture
 } from '../controllers/userController.js';
 import { isAuth } from '../middlewares/isAuth.js';
+import uploadFile from '../middlewares/multer.js';
 
 const router = express.Router();
 
@@ -22,6 +24,7 @@ router.post("/logout", isAuth, logout);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:token", resetPassword);
 router.delete("/deleteall", isAuth, deleteAllUsers);
+router.put("/profile-picture",isAuth,uploadFile,updateProfilePicture);
 
 // Admin Routes
 router.get("/users", isAuth, getAllUsers);
