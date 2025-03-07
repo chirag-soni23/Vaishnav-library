@@ -22,7 +22,7 @@ const App = () => {
     if (user?.role == "member" && user && !user.profilePicture?.url) {
       const timer = setTimeout(() => {
        toast.error("Please update profile photo")
-      }, 10000); 
+      }, 50000); 
       return () => clearTimeout(timer);
     }
   }, [user]);
