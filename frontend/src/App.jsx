@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -12,12 +12,22 @@ import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import ResetPassword from "./pages/ResetPassword";
 import Member from "./components/Member";
+import toast from "react-hot-toast";
 
 const App = () => {
-  const { isAuth, loading } = UserData();
-  const { theme } = useThemeStore()
+  const { isAuth, loading, user } = UserData();
+  const { theme } = useThemeStore();
 
-  if (loading) return <Loading />
+  useEffect(() => {
+    if (user?.role == "member" && user && !user.profilePicture?.url) {
+      const timer = setTimeout(() => {
+       toast.error("Please update profile photo")
+      }, 10000); 
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  if (loading) return <Loading />;
 
   return (
     <BrowserRouter>
