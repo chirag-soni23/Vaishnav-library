@@ -87,8 +87,25 @@ export const editUser = tryCatch(async (req, res) => {
 
     await user.save();
 
+    if (user.role === "member") {
+        const message = `
+            Dear ${user.name}, Now, you are a member of Vaishnav library:
+            Name: ${user.name}
+            Email: ${user.email}
+            Mobile: ${user.mobileNumber}
+            Role: ${user.role}
+        `;
+
+        await sendEmail({
+            email: user.email,  
+            subject: "Your Profile Has Been Updated",
+            message
+        });
+    }
+
     res.status(200).json({ message: "User updated successfully!", user });
 });
+
 
 // Delete User
 export const deleteUser = tryCatch(async (req, res) => {
@@ -111,7 +128,6 @@ export const deleteAllUsers = tryCatch(async (req, res) => {
     const result = await User.deleteMany({});
     res.status(200).json({ message: "All users deleted successfully!", deletedCount: result.deletedCount });
 });
-
 
 // Get All Users
 export const getAllUsers = tryCatch(async (req, res) => {
@@ -212,8 +228,8 @@ export const updateProfilePicture = tryCatch(async (req, res) => {
 
 // Delete Profile Picture Based on User ID from Params
 export const deleteProfilePicture = tryCatch(async (req, res) => {
-    const userId = req.params.id;  
-    const user = await User.findById(userId); 
+    const userId = req.params.id;
+    const user = await User.findById(userId);
     if (!user) {
         return res.status(404).json({ message: "User not found!" });
     }
