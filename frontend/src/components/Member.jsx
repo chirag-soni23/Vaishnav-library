@@ -4,11 +4,16 @@ import { Cross } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Member = () => {
-  const { allUsers, deleteProfilePicture,user } = UserData(); 
+  const { allUsers, deleteProfilePicture, user } = UserData();
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); 
 
-  const members = allUsers?.filter((user) => user.role === "member");
+  const members = allUsers?.filter(
+    (user) =>
+      user.role === "member" &&
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleAvatarClick = (member) => {
     if (!member.profilePicture?.url) {
@@ -22,7 +27,7 @@ const Member = () => {
     if (window.confirm("Are you sure you want to delete this profile picture?")) {
       setIsDeleting(true);
       try {
-        await deleteProfilePicture(userId);  // Call delete function from context
+        await deleteProfilePicture(userId); 
         toast.success("Profile picture deleted successfully.");
       } catch (error) {
         toast.error("Failed to delete profile picture.");
@@ -34,6 +39,17 @@ const Member = () => {
 
   return (
     <div className="overflow-x-auto mt-16">
+      {/* Search Input */}
+      <div className="mb-4 mt-10 flex justify-center">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="input input-bordered max-w-xs sm:max-w-md md:max-w-lg w-full"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} 
+        />
+      </div>
+
       {members?.length > 0 ? (
         <table className="table">
           {/* Table Head */}
@@ -43,7 +59,7 @@ const Member = () => {
               <th>Email</th>
               <th>Date of Birth</th>
               <th>Role</th>
-              <th className={`${user.role=="admin"?"":"hidden"}`}>Actions</th> 
+              <th className={`${user.role === "admin" ? "" : "hidden"}`}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -72,7 +88,7 @@ const Member = () => {
                 <td>
                   <span className="badge badge-ghost badge-sm">{member.role}</span>
                 </td>
-                <td className={`${user.role=="admin"?"":"hidden"}`}>
+                <td className={`${user.role === "admin" ? "" : "hidden"}`}>
                   {member.profilePicture?.url && (
                     <button
                       className="btn btn-sm btn-danger mt-2"
