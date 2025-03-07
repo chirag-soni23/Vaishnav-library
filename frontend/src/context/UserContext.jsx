@@ -174,6 +174,23 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    // Delete Profile Picture based on User ID (from the request params)
+    async function deleteProfilePicture(userId) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.delete(`/api/user/delete-profilePic/${userId}`);
+            toast.success(data.message);
+
+            setUser(prevUser => ({
+                ...prevUser,
+                profilePicture: null
+            }));
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to delete profile picture.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
 
     // Delete All Users (Admin Only)
     async function deleteAllUsers() {
@@ -234,7 +251,8 @@ export const UserProvider = ({ children }) => {
                 loading,
                 isLoading,
                 editProfile,
-                updateProfilePicture
+                updateProfilePicture,
+                deleteProfilePicture
             }}
         >
             {children}

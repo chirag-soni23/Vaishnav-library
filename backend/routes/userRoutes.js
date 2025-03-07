@@ -10,7 +10,8 @@ import {
     myProfile,
     registerUser,
     deleteAllUsers,
-    updateProfilePicture
+    updateProfilePicture,
+    deleteProfilePicture
 } from '../controllers/userController.js';
 import { isAuth } from '../middlewares/isAuth.js';
 import uploadFile from '../middlewares/multer.js';
@@ -30,5 +31,6 @@ router.put("/profile-picture",isAuth,uploadFile,updateProfilePicture);
 router.get("/users", isAuth, getAllUsers);
 router.patch("/users/:id", isAuth, editUser);
 router.delete("/users/:id", isAuth, deleteUser);
+router.delete("/delete-profilePic/:id",isAuth,deleteProfilePicture);
 
 export default router;

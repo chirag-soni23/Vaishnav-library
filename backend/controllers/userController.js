@@ -210,5 +210,22 @@ export const updateProfilePicture = tryCatch(async (req, res) => {
     }
 });
 
+// Delete Profile Picture Based on User ID from Params
+export const deleteProfilePicture = tryCatch(async (req, res) => {
+    const userId = req.params.id;  
+    const user = await User.findById(userId); 
+    if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+    }
 
+    if (user.profilePicture && user.profilePicture.id) {
+        await cloudinary.v2.uploader.destroy(user.profilePicture.id);
 
+        user.profilePicture = undefined;
+        await user.save();
+
+        return res.status(200).json({ message: "Profile picture deleted successfully!" });
+    } else {
+        return res.status(404).json({ message: "No profile picture to delete!" });
+    }
+});

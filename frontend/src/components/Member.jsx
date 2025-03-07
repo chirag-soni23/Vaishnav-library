@@ -4,8 +4,9 @@ import { Cross } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Member = () => {
-  const { allUsers } = UserData();
+  const { allUsers, deleteProfilePicture } = UserData(); 
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const members = allUsers?.filter((user) => user.role === "member");
 
@@ -15,6 +16,20 @@ const Member = () => {
       return;
     }
     setSelectedUser(member);
+  };
+
+  const handleDeleteClick = async (userId) => {
+    if (window.confirm("Are you sure you want to delete this profile picture?")) {
+      setIsDeleting(true);
+      try {
+        await deleteProfilePicture(userId);  // Call delete function from context
+        toast.success("Profile picture deleted successfully.");
+      } catch (error) {
+        toast.error("Failed to delete profile picture.");
+      } finally {
+        setIsDeleting(false);
+      }
+    }
   };
 
   return (
@@ -28,7 +43,7 @@ const Member = () => {
               <th>Email</th>
               <th>Date of Birth</th>
               <th>Role</th>
-              <th></th>
+              <th>Actions</th> 
             </tr>
           </thead>
           <tbody>
@@ -55,9 +70,18 @@ const Member = () => {
                 <td>{member.email}</td>
                 <td>{new Date(member.dateOfBirth).toLocaleDateString()}</td>
                 <td>
-                  <span className="badge badge-ghost badge-sm">
-                    {member.role}
-                  </span>
+                  <span className="badge badge-ghost badge-sm">{member.role}</span>
+                </td>
+                <td>
+                  {member.profilePicture?.url && (
+                    <button
+                      className="btn btn-sm btn-danger mt-2"
+                      onClick={() => handleDeleteClick(member._id)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? "Deleting..." : "Delete Profile Picture"}
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -85,9 +109,7 @@ const Member = () => {
               alt={selectedUser?.name}
               className="w-full h-auto rounded-lg"
             />
-            <p className="text-white text-center mt-2 font-bold">
-              {selectedUser?.name}
-            </p>
+            <p className="text-white text-center mt-2 font-bold">{selectedUser?.name}</p>
           </div>
         </div>
       )}
