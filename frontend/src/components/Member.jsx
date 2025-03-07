@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import { UserData } from '../context/UserContext';
-import {Cross} from "lucide-react";
+import React, { useState } from "react";
+import { UserData } from "../context/UserContext";
+import { Cross } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Member = () => {
   const { allUsers } = UserData();
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const members = allUsers?.filter(user => user.role === "member");
+  const members = allUsers?.filter((user) => user.role === "member");
+
+  const handleAvatarClick = (member) => {
+    if (!member.profilePicture?.url) {
+      toast.error("No profile photo available");
+      return;
+    }
+    setSelectedUser(member);
+  };
 
   return (
     <div className="overflow-x-auto mt-16">
@@ -17,7 +26,6 @@ const Member = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              {/* <th>Mobile Number</th> */}
               <th>Date of Birth</th>
               <th>Role</th>
               <th></th>
@@ -29,8 +37,14 @@ const Member = () => {
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12 cursor-pointer" onClick={() => setSelectedUser(member)}>
-                        <img src={member?.profilePicture?.url || "./avatar.png"} alt={member.name} />
+                      <div
+                        className="mask mask-squircle h-12 w-12 cursor-pointer"
+                        onClick={() => handleAvatarClick(member)}
+                      >
+                        <img
+                          src={member?.profilePicture?.url || "./avatar.png"}
+                          alt={member.name}
+                        />
                       </div>
                     </div>
                     <div>
@@ -39,10 +53,11 @@ const Member = () => {
                   </div>
                 </td>
                 <td>{member.email}</td>
-                {/* <td>{member.mobileNumber}</td> */}
                 <td>{new Date(member.dateOfBirth).toLocaleDateString()}</td>
                 <td>
-                  <span className="badge badge-ghost badge-sm">{member.role}</span>
+                  <span className="badge badge-ghost badge-sm">
+                    {member.role}
+                  </span>
                 </td>
               </tr>
             ))}
@@ -54,16 +69,25 @@ const Member = () => {
 
       {/* Profile Picture Popup */}
       {selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={() => setSelectedUser(null)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={() => setSelectedUser(null)}
+        >
           <div className="p-4 rounded-lg shadow-lg max-w-sm relative">
-            <button 
-              className="absolute top-2 right-2 rounded-full w-8 h-8 p-1 bg-slate-700 flex justify-center items-center" 
+            <button
+              className="absolute top-2 right-2 rounded-full w-8 h-8 p-1 bg-slate-700 flex justify-center items-center"
               onClick={() => setSelectedUser(null)}
             >
-              <Cross className='w-5 h-5 text-white rotate-45'/>              
+              <Cross className="w-5 h-5 text-white rotate-45" />
             </button>
-            <img src={selectedUser.profilePicture.url} alt={selectedUser.name} className="w-full h-auto rounded-lg" />
-            <p className="text-white text-center mt-2 font-bold">{selectedUser.name}</p>
+            <img
+              src={selectedUser?.profilePicture?.url || "./avatar.png"}
+              alt={selectedUser?.name}
+              className="w-full h-auto rounded-lg"
+            />
+            <p className="text-white text-center mt-2 font-bold">
+              {selectedUser?.name}
+            </p>
           </div>
         </div>
       )}
