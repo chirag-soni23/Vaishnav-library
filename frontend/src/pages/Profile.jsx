@@ -1,6 +1,6 @@
-import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle } from "lucide-react";
-import { UserData } from "../context/UserContext";
 import { useState, useEffect } from "react";
+import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle, X, Cross } from "lucide-react";
+import { UserData } from "../context/UserContext";
 
 const Profile = () => {
   const { user, btnLoading, editProfile, updateProfilePicture } = UserData();
@@ -11,6 +11,7 @@ const Profile = () => {
     mobileNumber: user?.mobileNumber || "",
     dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setFormData({
@@ -49,14 +50,15 @@ const Profile = () => {
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           {/* Profile Picture */}
           <div className="text-center">
-            <div className="relative w-32 h-32 mx-auto">
+            <div className={`relative ${user.role == "user" ?"hidden":""} w-32 h-32 mx-auto`}>
               <img
                 src={user?.profilePicture?.url || "/default-profile.png"}
                 alt="Profile"
-                className="w-full h-full rounded-full object-cover border-2 border-gray-300"
+                className="w-full h-full rounded-full object-cover border-2 border-gray-300 cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
               />
               <label className="absolute bottom-2 right-2 bg-gray-800 p-2 rounded-full cursor-pointer">
-                {btnLoading? <LoaderCircle className="w-5 h-5 text-white animate-spin"/>:
+                {btnLoading ? <LoaderCircle className="w-5 h-5 text-white animate-spin"/> :
                 <Camera className="w-5 h-5 text-white" />}
                 <input
                   type="file"
@@ -67,12 +69,34 @@ const Profile = () => {
                 />
               </label>
             </div>
-            <h1 className="text-2xl font-semibold mt-3">{user?.name}</h1>
+            <h1 className={`text-2xl font-semibold mt-3 ${user.role == "user" ?"hidden":""}`}>{user?.name}</h1>
             <p className="mt-1">Your profile information</p>
           </div>
 
+          {/* Profile Picture Modal */}
+          {isModalOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
+              onClick={() => setIsModalOpen(false)}
+            >
+              <div className="relative p-4 rounded-lg max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
+                <button
+                  className="absolute top-2 right-2 bg-slate-700 w-8 h-8 rounded-full flex justify-center items-center"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  <Cross className="w-5 h-5 rotate-45 text-white" />
+                </button>
+                <img
+                  src={user?.profilePicture?.url || "/default-profile.png"}
+                  alt="Profile"
+                  className="w-full rounded-lg"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Profile Fields */}
           <div className="space-y-6">
-            {/* Full Name */}
             <ProfileField
               label="Full Name"
               icon={<User className="w-4 h-4" />}
@@ -85,7 +109,6 @@ const Profile = () => {
               btnLoading={btnLoading}
             />
 
-            {/* Email Address */}
             <ProfileField
               label="Email Address"
               icon={<Mail className="w-4 h-4" />}
@@ -98,7 +121,6 @@ const Profile = () => {
               btnLoading={btnLoading}
             />
 
-            {/* Mobile Number */}
             <ProfileField
               label="Mobile Number"
               icon={<Phone className="w-4 h-4" />}
@@ -111,7 +133,6 @@ const Profile = () => {
               btnLoading={btnLoading}
             />
 
-            {/* Date of Birth */}
             <ProfileField
               label="Date of Birth"
               icon={<Calendar className="w-4 h-4" />}

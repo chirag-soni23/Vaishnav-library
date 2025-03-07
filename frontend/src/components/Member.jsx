@@ -24,13 +24,13 @@ const Member = () => {
             </tr>
           </thead>
           <tbody>
-            {members.map((member, index) => (
+            {members?.map((member, index) => (
               <tr key={index}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12 cursor-pointer" onClick={() => setSelectedUser(member)}>
-                        <img src={member.profilePicture.url} alt={member.name} />
+                        <img src={member?.profilePicture?.url || "./avatar.png"} alt={member.name} />
                       </div>
                     </div>
                     <div>
