@@ -38,25 +38,44 @@ const Hero = () => {
       </div>
 
       {/* Moving Thoughts Line */}
-      <div className="absolute bottom-5 w-full overflow-hidden whitespace-nowrap">
+      <div className="absolute bottom-5 w-full overflow-hidden">
         <div className="animate-marquee text-lg font-semibold flex space-x-10">
+          {/* Duplicate the text to ensure seamless looping */}
           <span>A reader lives a thousand lives before he dies.</span>
           <span>Books are a uniquely portable magic.</span>
           <span>Knowledge is power, read more books!</span>
           <span>Explore. Dream. Discover.</span>
+          <span>Reading gives us someplace to go when we have to stay where we are.</span>
+          <span>The more that you read, the more things you will know.</span>
+          <span>There is no friend as loyal as a book.</span>
+          <span>So many books, so little time.</span>
+          <span>Books are the mirrors of the soul.</span>
+          <span>Reading is to the mind what exercise is to the body.</span>
+
+          {/* Duplicate the same text again for infinite looping */}
+          <span>A reader lives a thousand lives before he dies.</span>
+          <span>Books are a uniquely portable magic.</span>
+          <span>Knowledge is power, read more books!</span>
+          <span>Explore. Dream. Discover.</span>
+          <span>Reading gives us someplace to go when we have to stay where we are.</span>
+          <span>The more that you read, the more things you will know.</span>
+          <span>There is no friend as loyal as a book.</span>
+          <span>So many books, so little time.</span>
+          <span>Books are the mirrors of the soul.</span>
+          <span>Reading is to the mind what exercise is to the body.</span>
         </div>
       </div>
 
       <style>
         {`
           @keyframes marquee {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
           }
           .animate-marquee {
             display: inline-block;
             white-space: nowrap;
-            animation: marquee 20s linear infinite;
+            animation: marquee 60s linear infinite;
           }
         `}
       </style>
