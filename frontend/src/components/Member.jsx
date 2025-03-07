@@ -9,11 +9,19 @@ const Member = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Filter members based on search query
   const members = allUsers?.filter(
     (user) =>
       user.role === "member" &&
       user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // If logged-in user exists in the filtered members list, move them to the top
+  const sortedMembers = members?.sort((a, b) => {
+    if (a._id === user._id) return -1;  // Logged-in user goes to the top
+    if (b._id === user._id) return 1;   // Logged-in user goes to the top
+    return 0;
+  });
 
   const handleAvatarClick = (member) => {
     if (!member.profilePicture?.url) {
@@ -49,7 +57,7 @@ const Member = () => {
         />
       </div>
 
-      {members?.length > 0 ? (
+      {sortedMembers?.length > 0 ? (
         <table className="table w-full">
           {/* Table Head */}
           <thead>
@@ -62,7 +70,7 @@ const Member = () => {
             </tr>
           </thead>
           <tbody>
-            {members?.map((member, index) => (
+            {sortedMembers?.map((member, index) => (
               <tr key={index}>
                 <td>
                   <div className="flex items-center gap-3">
