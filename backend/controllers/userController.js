@@ -5,7 +5,7 @@ import crypto from "crypto";
 import { User } from "../models/userModel.js";
 import sendEmail from "../utils/sendEmail.js";
 import redisClient from "../services/redis.service.js";
-import cloudinary from "cloudinary"; 
+import cloudinary from "cloudinary";
 
 // Register User
 export const registerUser = tryCatch(async (req, res) => {
@@ -44,7 +44,7 @@ export const loginUser = tryCatch(async (req, res) => {
     const token = generateToken(user._id, res);
     const redisKey = `auth_token:${user._id}`;
 
-    await redisClient.set(redisKey, token, 'EX', 3600); 
+    await redisClient.set(redisKey, token, 'EX', 3600);
 
     res.status(200).json({ message: "User logged in successfully!" });
 });
