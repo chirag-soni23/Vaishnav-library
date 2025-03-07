@@ -22,7 +22,8 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <Library className="w-5 h-5 text-primary" />
               </div>
-              <h1 className="text-lg font-bold">Library Hub</h1>
+             <h1 className="text-lg hidden sm:block lg:block md:block font-bold">Library Hub</h1>
+
             </Link>
           </div>
 
