@@ -4,7 +4,7 @@ import { Cross } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Member = () => {
-  const { allUsers, deleteProfilePicture } = UserData(); 
+  const { allUsers, deleteProfilePicture,user } = UserData(); 
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -43,7 +43,7 @@ const Member = () => {
               <th>Email</th>
               <th>Date of Birth</th>
               <th>Role</th>
-              <th>Actions</th> 
+              <th className={`${user.role=="admin"?"":"hidden"}`}>Actions</th> 
             </tr>
           </thead>
           <tbody>
@@ -72,7 +72,7 @@ const Member = () => {
                 <td>
                   <span className="badge badge-ghost badge-sm">{member.role}</span>
                 </td>
-                <td>
+                <td className={`${user.role=="admin"?"":"hidden"}`}>
                   {member.profilePicture?.url && (
                     <button
                       className="btn btn-sm btn-danger mt-2"
