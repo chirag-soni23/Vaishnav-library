@@ -180,30 +180,35 @@ export const updateProfilePicture = tryCatch(async (req, res) => {
         return res.status(400).json({ message: "No file uploaded!" });
     }
 
-    // Delete old profile picture from Cloudinary
-    if (user.profilePicture && user.profilePicture.id) {
-        await cloudinary.v2.uploader.destroy(user.profilePicture.id);
-    }
-
-    // Upload new profile picture using upload_stream
-    const uploadStream = cloudinary.v2.uploader.upload_stream(
-        { folder: "profile_pictures", width: 500, height: 500, crop: "fill" },
-        async (error, result) => {
-            if (error) {
-                return res.status(500).json({ message: "Cloudinary upload failed", error });
-            }
-
-            user.profilePicture = {
-                id: result.public_id,
-                url: result.secure_url,
-            };
-
-            await user.save();
-            res.status(200).json({ message: "Profile picture updated successfully!", profilePicture: user.profilePicture });
+    try {
+        // Delete old profile picture from Cloudinary
+        if (user.profilePicture && user.profilePicture.id) {
+            await cloudinary.v2.uploader.destroy(user.profilePicture.id);
         }
-    );
 
-    uploadStream.end(req.file.buffer); // Send the buffer to Cloudinary
+        // Upload new profile picture
+        const result = await cloudinary.v2.uploader.upload_stream(
+            { folder: "profile_pictures", width: 500, height: 500, crop: "fill" },
+            async (error, result) => {
+                if (error) {
+                    return res.status(500).json({ message: "Cloudinary upload failed", error });
+                }
+
+                user.profilePicture = {
+                    id: result.public_id,
+                    url: result.secure_url,
+                };
+
+                await user.save();
+                res.status(200).json({ message: "Profile picture updated successfully!", profilePicture: user.profilePicture });
+            }
+        );
+
+        result.end(req.file.buffer); // Send the buffer to Cloudinary
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong", error });
+    }
 });
+
 
 

@@ -154,6 +154,27 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    // Update Profile Picture
+    async function updateProfilePicture(file) {
+        setBtnLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const { data } = await axios.put("/api/user/profile-picture", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            toast.success(data.message);
+            setUser(prevUser => ({ ...prevUser, profilePicture: data.profilePicture }));
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to update profile picture.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+
     // Delete All Users (Admin Only)
     async function deleteAllUsers() {
         setBtnLoading(true);
@@ -213,6 +234,7 @@ export const UserProvider = ({ children }) => {
                 loading,
                 isLoading,
                 editProfile,
+                updateProfilePicture
             }}
         >
             {children}
