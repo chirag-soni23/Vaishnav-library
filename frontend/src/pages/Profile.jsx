@@ -1,4 +1,4 @@
-import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera } from "lucide-react";
+import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle } from "lucide-react";
 import { UserData } from "../context/UserContext";
 import { useState, useEffect } from "react";
 
@@ -56,11 +56,13 @@ const Profile = () => {
                 className="w-full h-full rounded-full object-cover border-2 border-gray-300"
               />
               <label className="absolute bottom-2 right-2 bg-gray-800 p-2 rounded-full cursor-pointer">
-                <Camera className="w-5 h-5 text-white" />
+                {btnLoading? <LoaderCircle className="w-5 h-5 text-white animate-spin"/>:
+                <Camera className="w-5 h-5 text-white" />}
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
+                  disabled={btnLoading}
                   onChange={handleProfilePictureChange}
                 />
               </label>
