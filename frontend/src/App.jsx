@@ -13,6 +13,7 @@ import Admin from "./pages/Admin";
 import ResetPassword from "./pages/ResetPassword";
 import Member from "./components/Member";
 import toast from "react-hot-toast";
+import Chatbot from "./pages/Chatbot";
 
 const App = () => {
   const { isAuth, loading, user } = UserData();
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/members" element={isAuth ? <Member /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={isAuth ? <Home /> : <Login />} />
+          <Route path="/chatbot" element={isAuth ? <Chatbot /> : <Login />} />
           <Route path="/resetpassword/:token" element={<ResetPassword />} />
         </Routes>
       </div>
