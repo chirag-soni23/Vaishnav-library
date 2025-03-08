@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceData } from '../context/AttendanceContext';
 import { UserData } from '../context/UserContext';
+import { Loader2 } from 'lucide-react'; 
 
 const Admin = () => {
   const { allUsers, deleteUser, editProfile, deleteAllUsers } = UserData();
@@ -8,6 +9,7 @@ const Admin = () => {
 
   const [activeTab, setActiveTab] = useState('users');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
@@ -26,15 +28,18 @@ const Admin = () => {
   const handleRoleChange = (userId, newRole) => {
     const userToUpdate = allUsers.find((user) => user._id === userId);
     if (userToUpdate && userToUpdate.role !== newRole) {
+      setIsLoading(true);
       editProfile({ userId, role: newRole })
         .then(() => {
           const updatedUsers = allUsers.map((user) =>
             user._id === userId ? { ...user, role: newRole } : user
           );
           setAllUsers(updatedUsers);
+          setIsLoading(false); 
         })
         .catch((error) => {
           console.error("Failed to update role:", error);
+          setIsLoading(false); 
         });
     }
   };
@@ -62,7 +67,14 @@ const Admin = () => {
   };
 
   return (
-    <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8 relative">
+
+      {isLoading && (
+        <div className="absolute h-screen w-screen inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-[100]">
+          <Loader2 className="animate-spin h-16 w-16 text-white" />
+        </div>
+      )}
+
       {/* Search Bar */}
       <div className="mb-4">
         <input
@@ -162,16 +174,6 @@ const Admin = () => {
       {/* Attendance Section */}
       {activeTab === 'attendance' && (
         <div>
-          {/* Delete All Attendance Records Button */}
-          {/* <div className="mb-4">
-            <button
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-              onClick={handleDeleteAllAttendance}
-            >
-              Delete All Attendance Records
-            </button>
-          </div> */}
-
           <div className="overflow-x-auto mt-4">
             <table className="table table-zebra w-full">
               <thead>
