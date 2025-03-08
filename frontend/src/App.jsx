@@ -42,7 +42,7 @@ const App = () => {
           <Route path="/members" element={isAuth ? <Member /> : <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={isAuth ? <Home /> : <Login />} />
-          <Route path="/chatbot" element={isAuth ? <Chatbot /> : <Login />} />
+          {/* <Route path="/chatbot" element={isAuth ? <Chatbot /> : <Login />} /> */}
           <Route path="/resetpassword/:token" element={<ResetPassword />} />
         </Routes>
       </div>
