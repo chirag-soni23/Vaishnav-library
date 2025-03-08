@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import library1 from "../assets/library1.jpg";
 import library2 from "../assets/library2.jpg";
 import library3 from "../assets/library3.jpg";
 import library4 from "../assets/library4.jpg";
 import library5 from "../assets/library5.jpg";
 import library6 from "../assets/library6.jpg";
-import library7 from "../assets/library7.jpg"
-import library8 from "../assets/library8.jpg"
-
+import library7 from "../assets/library7.jpg";
+import library8 from "../assets/library8.jpg";
 
 const libraryImages = [
   { id: 1, src: library1 },
@@ -22,6 +22,16 @@ const libraryImages = [
 
 const Images = () => {
   const [visibleCount, setVisibleCount] = useState(3);
+  const imageRefs = useRef([]);
+
+  useEffect(() => {
+    // GSAP Animation when the images are rendered
+    gsap.fromTo(
+      imageRefs.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, stagger: 0.1, duration: 1 }
+    );
+  }, [visibleCount]);
 
   const showMoreImages = () => {
     setVisibleCount(libraryImages.length);
@@ -35,8 +45,12 @@ const Images = () => {
     <>
       <h1 className="text-3xl font-bold text-center mb-5 mt-10">About Our Library</h1>
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-base-100 shadow-xl">
-        {libraryImages.slice(0, visibleCount).map((img) => (
-          <figure key={img.id} className="w-full h-auto">
+        {libraryImages.slice(0, visibleCount).map((img, index) => (
+          <figure
+            key={img.id}
+            className="w-full h-auto"
+            ref={(el) => (imageRefs.current[index] = el)}
+          >
             <img
               src={img.src}
               alt={`Library ${img.id}`}

@@ -1,8 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Data } from "../context/Data.js";
+import { gsap } from "gsap";
 
 const Card = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const cardsRef = useRef([]); 
+
+  useEffect(() => {
+    gsap.fromTo(
+      cardsRef.current,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1, 
+        y: 0, 
+        stagger: 0.2,
+        duration: 0.6, 
+        ease: "power3.out", 
+      }
+    );
+  }, []);
 
   useEffect(() => {
     if (selectedItem) {
@@ -16,12 +32,28 @@ const Card = () => {
     };
   }, [selectedItem]);
 
+  const closeModal = () => {
+    gsap.to(".modal-box", {
+      opacity: 0,
+      y: 50,
+      duration: 0.6,
+      ease: "power3.in",
+      onComplete: () => {
+        setSelectedItem(null);
+      },
+    });
+  };
+
   return (
     <div className="overflow-x-hidden px-5">
       <h1 className="text-3xl font-bold text-center mb-5 mt-10">Facilities</h1>
       <div className="carousel mt-10 carousel-end gap-5">
-        {Data.map((item) => (
-          <div key={item.id} className="carousel-item flex flex-col items-center">
+        {Data.map((item, index) => (
+          <div
+            key={item.id}
+            className="carousel-item flex flex-col items-center"
+            ref={(el) => (cardsRef.current[index] = el)} // Reference for each card
+          >
             <img
               src={item.image}
               alt={item.name}
@@ -51,7 +83,7 @@ const Card = () => {
             <div className="modal-action">
               <button
                 className="btn btn-error"
-                onClick={() => setSelectedItem(null)}
+                onClick={closeModal}
               >
                 Close
               </button>
