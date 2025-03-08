@@ -5,6 +5,7 @@ import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import path from "path";
 import cors from "cors";
 import compression from 'compression';
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use('/api/user', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/ai",aiRoutes);
 
 // app.get((req, res) = > {
 //   res.send('Hello Chirag, Your Backend is Working!');
