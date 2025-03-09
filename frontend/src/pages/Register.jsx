@@ -84,106 +84,112 @@ const Register = () => {
           </div>
 
           <form onSubmit={otpSent ? handleRegister : handleSendOtp} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 size-5 text-base-content/40" />
-                <input
-                  type="email"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={otpSent && !otpError}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Full Name and Email */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">Full Name</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="size-5 text-base-content/40" />
+                  </div>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full pl-10"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">Email</span>
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 size-5 text-base-content/40" />
+                  <input
+                    type="email"
+                    className="input input-bordered w-full pl-10"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={otpSent && !otpError}
+                  />
+                </div>
               </div>
             </div>
-            
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Mobile Number and Date of Birth */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">Mobile Number</span>
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 size-5 text-base-content/40" />
+                  <input
+                    type="tel"
+                    className="input input-bordered w-full pl-10"
+                    placeholder="Enter your mobile number"
+                    value={mobileNumber}
+                    onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">Date of Birth</span>
+                </label>
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-3 size-5 text-base-content/40" />
+                  <input
+                    type="date"
+                    className="input input-bordered w-full pl-10"
+                    value={dateOfBirth}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Password */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text font-medium">Full Name</span>
+                <span className="label-text font-medium">Password</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
+                  <Lock className="size-5 text-base-content/40" />
                 </div>
                 <input
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   className="input input-bordered w-full pl-10"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <Eye className="size-5 text-base-content/40" />
+                  ) : (
+                    <EyeOff className="size-5 text-base-content/40" />
+                  )}
+                </button>
               </div>
             </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Mobile Number</span>
-              </label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-3 size-5 text-base-content/40" />
-                <input
-                  type="tel"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="Enter your mobile number"
-                  value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Date of Birth</span>
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-3 size-5 text-base-content/40" />
-                <input
-                  type="date"
-                  className="input input-bordered w-full pl-10"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-             {/* Password */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Password</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="size-5 text-base-content/40" />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="input input-bordered w-full pl-10"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <Eye className="size-5 text-base-content/40" />
-                ) : (
-                  <EyeOff className="size-5 text-base-content/40" />
-                )}
-              </button>
-            </div>
-          </div>
 
             {otpSent && otpError && (
               <button
