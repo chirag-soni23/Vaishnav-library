@@ -41,16 +41,33 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+  
     if (!otp) {
       toast.error("Please enter OTP to verify your email.");
       return;
     }
+  
+    // Check password length
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+  
+    // Check future date validation
+    const selectedDate = new Date(dateOfBirth);
+    const currentDate = new Date();
+    if (selectedDate > currentDate) {
+      toast.error("Date of birth cannot be a future date.");
+      return;
+    }
+  
     const success = await registerUser(name, email, password, mobileNumber, dateOfBirth, otp, navigate);
     if (!success) {
       setOtpError(true);
       toast.error("Invalid OTP. Please try again.");
     }
   };
+  
 
   return (
     <div className="min-h-screen">
@@ -89,14 +106,19 @@ const Register = () => {
               <label className="label">
                 <span className="label-text font-medium">Full Name</span>
               </label>
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Enter your full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="size-5 text-base-content/40" />
+                </div>
+                <input
+                  type="text"
+                  className="input input-bordered w-full pl-10"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
             <div className="form-control">
