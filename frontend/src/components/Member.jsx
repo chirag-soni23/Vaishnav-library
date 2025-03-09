@@ -86,6 +86,9 @@ const Member = () => {
                     </div>
                     <div>
                       <div className="font-bold">{member.name}</div>
+                      {member._id === user._id && (
+                        <span className="badge badge-info badge-sm ml-2">Me</span>
+                      )}
                     </div>
                   </div>
                 </td>
@@ -106,7 +109,6 @@ const Member = () => {
                     </button>
                   )}
                 </td>
-
               </tr>
             ))}
           </tbody>
