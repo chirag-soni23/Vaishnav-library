@@ -4,15 +4,15 @@ import { UserData } from '../context/UserContext';
 import { Loader2 } from 'lucide-react';
 
 const Admin = () => {
-  const { allUsers, deleteUser, editProfile, deleteAllUsers,user } = UserData();
+  const { allUsers, deleteUser, editProfile, deleteAllUsers, user } = UserData();
   const { attendanceRecords, deleteAttendance, deleteAllAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const loggedInUserEmail = user.email; // Get the logged-in user's email
 
-  const loggedInUserName = user.name; 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
     if (confirmDelete) {
@@ -36,20 +36,19 @@ const Admin = () => {
           const updatedUsers = allUsers.map((user) =>
             user._id === userId ? { ...user, role: newRole } : user
           );
-          setAllUsers(updatedUsers);
-          setIsLoading(false); 
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Failed to update role:", error);
-          setIsLoading(false); 
+          setIsLoading(false);
         });
     }
   };
 
-  // Sort users to place the logged-in user (you) at the top
+  // Sort users to place the logged-in user's email at the top
   const sortedUsers = [...allUsers].sort((a, b) => {
-    if (a.name === loggedInUserName) return -1; // Place your name at the top
-    if (b.name === loggedInUserName) return 1;
+    if (a.email === loggedInUserEmail) return -1; // Place your email at the top
+    if (b.email === loggedInUserEmail) return 1;
     return 0; // Otherwise, keep the order the same
   });
 
@@ -142,8 +141,7 @@ const Admin = () => {
                     <tr key={user._id}>
                       <th>{index + 1}</th>
                       <td>
-                        {user.name} {user.name === loggedInUserName && <div className="text-sm text-gray-500">me</div>}
-                       
+                        {user.name} {user.email === loggedInUserEmail && <div className="text-sm text-gray-500">me</div>}
                       </td>
                       <td>{user.email}</td>
                       <td>{user.mobileNumber}</td>
