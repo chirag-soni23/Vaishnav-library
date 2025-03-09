@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceData } from '../context/AttendanceContext';
 import { UserData } from '../context/UserContext';
-import { Loader2 } from 'lucide-react'; 
+import { Loader2 } from 'lucide-react';
 
 const Admin = () => {
-  const { allUsers, deleteUser, editProfile, deleteAllUsers } = UserData();
+  const { allUsers, deleteUser, editProfile, deleteAllUsers,user } = UserData();
   const { attendanceRecords, deleteAttendance, deleteAllAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+
+  const loggedInUserName = user.name; 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
     if (confirmDelete) {
@@ -44,7 +46,14 @@ const Admin = () => {
     }
   };
 
-  const filteredUsers = allUsers.filter(user =>
+  // Sort users to place the logged-in user (you) at the top
+  const sortedUsers = [...allUsers].sort((a, b) => {
+    if (a.name === loggedInUserName) return -1; // Place your name at the top
+    if (b.name === loggedInUserName) return 1;
+    return 0; // Otherwise, keep the order the same
+  });
+
+  const filteredUsers = sortedUsers.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -68,7 +77,6 @@ const Admin = () => {
 
   return (
     <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8 relative">
-
       {isLoading && (
         <div className="absolute h-screen w-screen inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-[100]">
           <Loader2 className="animate-spin h-16 w-16 text-white" />
@@ -133,7 +141,10 @@ const Admin = () => {
                   filteredUsers.map((user, index) => (
                     <tr key={user._id}>
                       <th>{index + 1}</th>
-                      <td>{user.name}</td>
+                      <td>
+                        {user.name} {user.name === loggedInUserName && <div className="text-sm text-gray-500">me</div>}
+                       
+                      </td>
                       <td>{user.email}</td>
                       <td>{user.mobileNumber}</td>
                       <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td>
