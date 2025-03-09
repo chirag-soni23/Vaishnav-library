@@ -5,7 +5,7 @@ import { UserData } from "../context/UserContext.jsx";
 import toast from 'react-hot-toast';
 
 const Register = () => {
-  const { registerUser, btnLoading } = UserData();
+  const { requestOTP, registerUser, btnLoading } = UserData();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -13,28 +13,42 @@ const Register = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpError, setOtpError] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-
-    const trimmedName = name.trim();
-    const nameParts = trimmedName.split(/\s+/);
-
-    if (nameParts.length < 2) {
-      toast.error("Full name must contain at least a first and last name.");
+    if (!email) {
+      toast.error("Please enter your email to receive OTP.");
       return;
     }
-
-    await registerUser(name, email, password, mobileNumber, dateOfBirth, navigate);
+    setResendLoading(true);
+    await requestOTP(email);
+    setOtpSent(true);
+    setOtpError(false);
+    setResendLoading(false);
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!otp) {
+      toast.error("Please enter OTP to verify your email.");
+      return;
+    }
+    const success = await registerUser(name, email, password, mobileNumber, dateOfBirth, otp, navigate);
+    if (!success) {
+      setOtpError(true);
+      toast.error("Invalid OTP. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen">
       <div className="flex justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
-          {/* LOGO */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
               <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -45,36 +59,13 @@ const Register = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Full Name */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Full Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  className="input input-bordered w-full pl-10"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Email */}
+          <form onSubmit={otpSent ? handleRegister : handleSendOtp} className="space-y-6">
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Email</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
+                <Mail className="absolute left-3 top-3 size-5 text-base-content/40" />
                 <input
                   type="email"
                   className="input input-bordered w-full pl-10"
@@ -82,40 +73,48 @@ const Register = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={otpSent && !otpError}
                 />
               </div>
             </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Full Name</span>
+              </label>
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Enter your full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
 
-            {/* Mobile Number */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Mobile Number</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="size-5 text-base-content/40" />
-                </div>
+                <Phone className="absolute left-3 top-3 size-5 text-base-content/40" />
                 <input
-                  maxLength={10}
-                  type="text"
+                  type="tel"
                   className="input input-bordered w-full pl-10"
-                  placeholder="123-456-7890"
+                  placeholder="Enter your mobile number"
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   required
                 />
               </div>
             </div>
 
-            {/* Date of Birth */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Date of Birth</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="size-5 text-base-content/40" />
-                </div>
+                <Calendar className="absolute left-3 top-3 size-5 text-base-content/40" />
                 <input
                   type="date"
                   className="input input-bordered w-full pl-10"
@@ -126,51 +125,43 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Password */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
+            {otpSent && otpError && (
+              <button
+                type="button"
+                className="btn btn-secondary w-full"
+                onClick={handleSendOtp}
+                disabled={resendLoading}
+              >
+                {resendLoading ? <Loader2 className="size-5 animate-spin mx-auto" /> : "Resend OTP"}
+              </button>
+            )}
+            
+            {otpSent ? (
+              <>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium">Enter OTP</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter OTP sent to email"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    required
+                  />
                 </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="input input-bordered w-full pl-10"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <Eye className="size-5 text-base-content/40" />
-                  ) : (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  )}
+                <button type="submit" className="btn btn-primary w-full" disabled={btnLoading}>
+                  {btnLoading ? <Loader2 className="size-5 animate-spin mx-auto" /> : "Verify & Register"}
                 </button>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button type="submit" className="btn btn-primary w-full" disabled={btnLoading}>
-              {btnLoading ? <Loader2 className="size-5 animate-spin mx-auto" /> : "Create Account"}
-            </button>
+              </>
+            ) : (
+              <button type="submit" className="btn btn-primary w-full" disabled={btnLoading}>
+                {btnLoading ? <Loader2 className="size-5 animate-spin mx-auto" /> : "Send OTP"}
+              </button>
+            )}
           </form>
-
-          <div className="text-center">
-            <p className="text-base-content/60">
-              Already have an account?{" "}
-              <Link to="/login" className="link link-primary">
-                Log in
-              </Link>
-            </p>
-          </div>
+          <p className="text-center mt-4">Already have an account? <Link to="/login" className="text-primary underline">Login</Link></p>
         </div>
       </div>
     </div>

@@ -12,8 +12,21 @@ export const UserProvider = ({ children }) => {
     const [allUsers, setAllUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Register User
-    async function registerUser(name, email, password, mobileNumber, dateOfBirth, navigate) {
+    // Request OTP
+    async function requestOTP(email) {
+        setBtnLoading(true);
+        try {
+            const { data } = await axios.post("/api/user/request-otp", { email });
+            toast.success(data.message);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to send OTP.");
+        } finally {
+            setBtnLoading(false);
+        }
+    }
+
+    // Register User with OTP
+    async function registerUser(name, email, password, mobileNumber, dateOfBirth, otp, navigate) {
         setBtnLoading(true);
         try {
             const { data } = await axios.post("/api/user/register", {
@@ -22,6 +35,7 @@ export const UserProvider = ({ children }) => {
                 password,
                 mobileNumber,
                 dateOfBirth,
+                otp,
             });
             toast.success(data.message);
             setUser(data.user);
@@ -104,7 +118,6 @@ export const UserProvider = ({ children }) => {
     async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
         setBtnLoading(true);
         try {
-            // Only admins can update user roles
             if (role && user?.role !== 'admin') {
                 toast.error("Only admins can update user roles.");
                 return;
@@ -174,7 +187,7 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    // Delete Profile Picture based on User ID (from the request params)
+    // Delete Profile Picture
     async function deleteProfilePicture(userId) {
         setBtnLoading(true);
         try {
@@ -236,6 +249,7 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider
             value={{
+                requestOTP,
                 registerUser,
                 loginUser,
                 logout,

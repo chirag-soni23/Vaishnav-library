@@ -7,22 +7,51 @@ import sendEmail from "../utils/sendEmail.js";
 import redisClient from "../services/redis.service.js";
 import cloudinary from "cloudinary";
 
-// Register User
+// Generate OTP
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// Request OTP for Registration
+export const requestOTP = tryCatch(async (req, res) => {
+    const { email } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        return res.status(400).json({ message: "User already exists!" });
+    }
+
+    const otp = generateOTP();
+    const redisKey = `otp:${email}`;
+
+    await redisClient.set(redisKey, otp, 'EX', 300); // OTP valid for 5 mins
+
+    await sendEmail({
+        email,
+        subject: "Your OTP for Registration",
+        message: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+    });
+
+    res.status(200).json({ message: "OTP sent to your email!" });
+});
+
+// Register User with OTP Verification
 export const registerUser = tryCatch(async (req, res) => {
-    const { name, email, password, mobileNumber, dateOfBirth } = req.body;
+    const { name, email, password, mobileNumber, dateOfBirth, otp } = req.body;
+
+    const redisKey = `otp:${email}`;
+    const storedOTP = await redisClient.get(redisKey);
+
+    if (!storedOTP || storedOTP !== otp) {
+        return res.status(400).json({ message: "Invalid or expired OTP!" });
+    }
 
     let user = await User.findOne({ email });
     if (user) {
         return res.status(400).json({ message: "User already exists!" });
     }
 
-    user = await User.create({
-        name,
-        email,
-        password,
-        mobileNumber,
-        dateOfBirth,
-    });
+    user = await User.create({ name, email, password, mobileNumber, dateOfBirth });
+
+    await redisClient.del(redisKey); // Remove OTP after successful registration
 
     generateToken(user._id, res);
     res.status(201).json({ message: "User registered successfully!" });
