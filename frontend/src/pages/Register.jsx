@@ -25,6 +25,13 @@ const Register = () => {
       toast.error("Please enter your email to receive OTP.");
       return;
     }
+    const trimmedName = name.trim();
+    const nameParts = trimmedName.split(/\s+/);
+
+    if (nameParts.length < 2) {
+      toast.error("Full name must contain at least a first and last name.");
+      return;
+    }
     setResendLoading(true);
     await requestOTP(email);
     setOtpSent(true);
