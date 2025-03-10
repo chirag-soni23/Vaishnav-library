@@ -27,7 +27,7 @@ export const requestOTP = tryCatch(async (req, res) => {
     await sendEmail({
         email,
         subject: "Your OTP for Registration",
-        message: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+        message: `Welcome to Vaishnav Library. Your OTP is ${otp}. It is valid for 5 minutes.`,
     });
 
     res.status(200).json({ message: "OTP sent to your email!" });
