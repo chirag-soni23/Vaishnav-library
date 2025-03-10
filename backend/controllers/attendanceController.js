@@ -73,3 +73,15 @@ export const deleteAttendance = tryCatch(async (req, res) => {
     await attendance.deleteOne();
     res.status(200).json({ message: "Attendance record deleted successfully!" });
 });
+
+// Delete All Attendance Records
+export const deleteAllAttendance = tryCatch(async (req, res) => {
+    const attendanceCount = await Attendance.countDocuments();
+
+    if (attendanceCount === 0) {
+        return res.status(404).json({ message: "No attendance records found to delete!" });
+    }
+
+    await Attendance.deleteMany();
+    res.status(200).json({ message: "All attendance records deleted successfully!" });
+});

@@ -180,9 +180,18 @@ const Admin = () => {
         </div>
       )}
 
-      {/* Attendance Section */}
       {activeTab === 'attendance' && (
         <div>
+          {/* Delete All Attendance Button */}
+          <div className="mb-4">
+            <button
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+              onClick={handleDeleteAllAttendance}
+            >
+              Delete All Attendance
+            </button>
+          </div>
+
           <div className="overflow-x-auto mt-4">
             <table className="table table-zebra w-full">
               <thead>
@@ -224,6 +233,7 @@ const Admin = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

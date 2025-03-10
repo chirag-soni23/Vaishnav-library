@@ -60,9 +60,6 @@ export const AttendanceProvider = ({ children }) => {
             setLoading(false);
         }
     }
-    useEffect(() => {
-        fetchAllAttendance()
-    }, []);
 
     // Delete Attendance Record
     async function deleteAttendance(id) {
@@ -78,6 +75,24 @@ export const AttendanceProvider = ({ children }) => {
         }
     }
 
+    // **Delete All Attendance Records**
+    async function deleteAllAttendance() {
+        setLoading(true);
+        try {
+            const { data } = await axios.delete("/api/attendance/delete-all");
+            toast.success(data.message);
+            setAttendanceRecords([]); // Clear all records from state
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to delete all attendance records.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchAllAttendance();
+    }, []);
+
     return (
         <AttendanceContext.Provider
             value={{
@@ -86,6 +101,7 @@ export const AttendanceProvider = ({ children }) => {
                 fetchAllAttendance,
                 fetchAttendanceByDate,
                 deleteAttendance,
+                deleteAllAttendance, // Added function here
                 attendanceRecords,
                 loading,
             }}
