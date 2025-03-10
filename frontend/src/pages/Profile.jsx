@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle, X, Cross } from "lucide-react";
+import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle, X } from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Profile = () => {
@@ -50,7 +50,7 @@ const Profile = () => {
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           {/* Profile Picture */}
           <div className="text-center">
-            <div className={`relative ${user.role == "user" ?"hidden":""} w-32 h-32 mx-auto`}>
+            <div className={`relative ${user.role == "user" ? "hidden" : ""} w-32 h-32 mx-auto`}>
               <img
                 src={user?.profilePicture?.url || "/default-profile.png"}
                 alt="Profile"
@@ -58,8 +58,8 @@ const Profile = () => {
                 onClick={() => setIsModalOpen(true)}
               />
               <label className="absolute bottom-2 right-2 bg-gray-800 p-2 rounded-full cursor-pointer">
-                {btnLoading ? <LoaderCircle className="w-5 h-5 text-white animate-spin"/> :
-                <Camera className="w-5 h-5 text-white" />}
+                {btnLoading ? <LoaderCircle className="w-5 h-5 text-white animate-spin" /> :
+                  <Camera className="w-5 h-5 text-white" />}
                 <input
                   type="file"
                   accept="image/*"
@@ -69,7 +69,7 @@ const Profile = () => {
                 />
               </label>
             </div>
-            <h1 className={`text-2xl font-semibold mt-3 ${user.role == "user" ?"hidden":""}`}>{user?.name}</h1>
+            <h1 className={`text-2xl font-semibold mt-3 ${user.role == "user" ? "hidden" : ""}`}>{user?.name}</h1>
             <p className="mt-1">Your profile information</p>
           </div>
 
@@ -84,7 +84,7 @@ const Profile = () => {
                   className="absolute top-2 right-2 bg-slate-700 w-8 h-8 rounded-full flex justify-center items-center"
                   onClick={() => setIsModalOpen(false)}
                 >
-                  <Cross className="w-5 h-5 rotate-45 text-white" />
+                  <X className="w-5 h-5 text-white" />
                 </button>
                 <img
                   src={user?.profilePicture?.url || "/default-profile.png"}
@@ -119,6 +119,7 @@ const Profile = () => {
               handleFieldChange={handleFieldChange}
               saveChanges={saveChanges}
               btnLoading={btnLoading}
+              disableEdit={true} // 👈 Email edit option disabled
             />
 
             <ProfileField
@@ -163,6 +164,7 @@ const ProfileField = ({
   handleFieldChange,
   saveChanges,
   btnLoading,
+  disableEdit = false, // 👈 Added this prop to disable edit
 }) => {
   return (
     <div className="space-y-1.5">
@@ -196,10 +198,12 @@ const ProfileField = ({
       ) : (
         <p className="flex items-center justify-between px-4 py-2.5 bg-base-200 rounded-lg border">
           {value || "N/A"}
-          <Pencil
-            className="w-4 h-4 cursor-pointer"
-            onClick={() => setEditField(name)}
-          />
+          {!disableEdit && ( // 👈 Email field ke liye pencil icon hide kar diya
+            <Pencil
+              className="w-4 h-4 cursor-pointer"
+              onClick={() => setEditField(name)}
+            />
+          )}
         </p>
       )}
     </div>
