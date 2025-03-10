@@ -39,7 +39,6 @@ app.use("/api/ai",aiRoutes);
 //   res.send('Hello Chirag, Your Backend is Working!');
 // });
 
-
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/frontend/dist")))
 app.get("*", (req, res) => {
