@@ -126,7 +126,7 @@ export const editUser = tryCatch(async (req, res) => {
         `;
 
         await sendEmail({
-            email: user.email,  
+            email: user.email,
             subject: "Your Profile Has Been Updated",
             message
         });
@@ -249,7 +249,7 @@ export const updateProfilePicture = tryCatch(async (req, res) => {
             }
         );
 
-        result.end(req.file.buffer); // Send the buffer to Cloudinary
+        result.end(req.file.buffer);
     } catch (error) {
         res.status(500).json({ message: "Something went wrong", error });
     }

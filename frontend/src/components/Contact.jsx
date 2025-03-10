@@ -40,7 +40,7 @@ const Contact = () => {
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
+          <label className="block text-sm font-bold mb-2">Name</label>
           <input
             type="text"
             className="input input-bordered w-full"
@@ -50,7 +50,7 @@ const Contact = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+          <label className="block text-sm font-bold mb-2">Email</label>
           <input
             type="email"
             className="input input-bordered w-full"
@@ -60,7 +60,7 @@ const Contact = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">Message</label>
+          <label className="block text-sm font-bold mb-2">Message</label>
           <textarea
             className="textarea textarea-bordered w-full"
             placeholder="Enter your message"

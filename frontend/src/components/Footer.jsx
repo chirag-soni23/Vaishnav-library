@@ -56,7 +56,7 @@ const Footer = () => {
   );
 
   return (
-    <footer className="py-8 mt-10 bg-neutral">
+    <footer className="py-8 px-2 mt-10 bg-neutral">
       <div className="container flex flex-col items-center justify-between mx-auto md:flex-row">
         <div className="flex items-center mb-6 md:mb-0">
           <div className="avatar">
