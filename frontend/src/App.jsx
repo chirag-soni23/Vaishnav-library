@@ -11,7 +11,7 @@ import { useThemeStore } from "./context/useThemeStore";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import ResetPassword from "./pages/ResetPassword";
-import Member from "./components/Member";
+import Member from "./pages/Member";
 import toast from "react-hot-toast";
 import Chatbot from "./pages/Chatbot";
 
