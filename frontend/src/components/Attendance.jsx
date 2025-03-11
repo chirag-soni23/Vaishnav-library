@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AttendanceData } from "../context/AttendanceContext";
 import { UserData } from "../context/UserContext";
 import { Info } from "lucide-react";
+
 const localizer = momentLocalizer(moment);
 
 export default function Attendance() {
@@ -14,21 +15,26 @@ export default function Attendance() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
 
   useEffect(() => {
-    const formattedEvents = attendanceRecords.map((record) => ({
-      title: record?.student?.name,
-      start: new Date(record.date),
-      end: new Date(record.date),
-      allDay: true,
-      student: record.student,
-      status: record.status,
-    }));
-    setEvents(formattedEvents);
-  }, [attendanceRecords]);
+    // Filter the attendance records to show only the logged-in user's attendance
+    const filteredEvents = attendanceRecords
+      .filter((record) => record.student._id === user?._id) // Only include the logged-in user's attendance
+      .map((record) => ({
+        title: record?.student?.name,
+        start: new Date(record.date),
+        end: new Date(record.date),
+        allDay: true,
+        student: record.student,
+        status: record.status,
+      }));
+
+    setEvents(filteredEvents);
+  }, [attendanceRecords, user]);
 
   const fetchTodayAttendance = useCallback(async () => {
     const today = moment().format("YYYY-MM-DD");
@@ -115,7 +121,7 @@ export default function Attendance() {
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            // events={events} 
+            events={events} 
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
