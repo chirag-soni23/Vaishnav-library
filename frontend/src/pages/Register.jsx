@@ -83,7 +83,6 @@ const Register = () => {
   };
 
   const handleMobileNumberChange = (e) => {
-    // Remove any non-numeric characters and limit to 10 digits
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
     setMobileNumber(value);
   };
@@ -176,7 +175,6 @@ const Register = () => {
                     onChange={(e) => {
                       const selectedDate = new Date(e.target.value);
                       const currentDate = new Date();
-                      // Prevent future date selection
                       if (selectedDate <= currentDate) {
                         setDateOfBirth(e.target.value);
                       } else {

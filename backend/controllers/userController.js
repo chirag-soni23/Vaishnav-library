@@ -51,7 +51,7 @@ export const registerUser = tryCatch(async (req, res) => {
 
     user = await User.create({ name, email, password, mobileNumber, dateOfBirth });
 
-    await redisClient.del(redisKey); // Remove OTP after successful registration
+    await redisClient.del(redisKey); 
 
     generateToken(user._id, res);
     res.status(201).json({ message: "User registered successfully!" });

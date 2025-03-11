@@ -22,7 +22,7 @@ export const sendEmail = (req, res) => {
 
   const mailOptions = {
     from: email,
-    to: process.env.EMAIL_USER, // the email to send to
+    to: process.env.EMAIL_USER,
     subject: `New message from ${name}`,
     text: `You have received a new message from ${name} (${email}):\n\n${message}`,
   };
