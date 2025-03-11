@@ -5,17 +5,17 @@ dotenv.config();
 
 // Set up the Nodemailer transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail', 
+  service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS, 
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
 // Controller function to handle sending the email
 export const sendEmail = (req, res) => {
   const { name, email, message } = req.body;
-  
+
   if (!name || !email || !message) {
     return res.status(400).json({ message: 'All fields are required' });
   }

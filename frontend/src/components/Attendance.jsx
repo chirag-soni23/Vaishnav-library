@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import toast, { Toaster } from "react-hot-toast";
 import { AttendanceData } from "../context/AttendanceContext";
 import { UserData } from "../context/UserContext";
-import { Info } from "lucide-react";
+import { Info, Loader2 } from "lucide-react";
 
 const localizer = momentLocalizer(moment);
 
@@ -88,7 +88,7 @@ export default function Attendance() {
   };
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto p-2 relative">
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
@@ -121,7 +121,7 @@ export default function Attendance() {
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            events={events} 
+            events={events} // Now only the logged-in user's events will be shown
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
@@ -133,8 +133,8 @@ export default function Attendance() {
       </div>
 
       {loading && (
-        <div className="loading-indicator">
-          <p>Loading...</p>
+        <div className="absolute inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50 z-50">
+         <Loader2 className="w-10 h-10 animate-spin"/>
         </div>
       )}
 
