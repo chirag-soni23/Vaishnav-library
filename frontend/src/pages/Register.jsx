@@ -18,6 +18,7 @@ const Register = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpError, setOtpError] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -46,13 +47,14 @@ const Register = () => {
       toast.error("Please enter OTP to verify your email.");
       return;
     }
-  
-    // Check password length
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
+
+    // Check password length and complexity using regex
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
+    if (!password.match(passwordRegex)) {
+      toast.error("Password must be at least 6 characters long, contain both lowercase and uppercase letters, and include a special character.");
       return;
     }
-  
+
     // Check future date validation
     const selectedDate = new Date(dateOfBirth);
     const currentDate = new Date();
@@ -67,7 +69,24 @@ const Register = () => {
       toast.error("Invalid OTP. Please try again.");
     }
   };
-  
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
+    if (!newPassword.match(passwordRegex)) {
+      setPasswordError("Password must be at least 6 characters long, contain both lowercase and uppercase letters, and include a special character.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleMobileNumberChange = (e) => {
+    // Remove any non-numeric characters and limit to 10 digits
+    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setMobileNumber(value);
+  };
 
   return (
     <div className="min-h-screen">
@@ -137,8 +156,9 @@ const Register = () => {
                     className="input input-bordered w-full pl-10"
                     placeholder="Enter your mobile number"
                     value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    onChange={handleMobileNumberChange}
                     required
+                    maxLength={10}
                   />
                 </div>
               </div>
@@ -153,7 +173,16 @@ const Register = () => {
                     type="date"
                     className="input input-bordered w-full pl-10"
                     value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
+                    onChange={(e) => {
+                      const selectedDate = new Date(e.target.value);
+                      const currentDate = new Date();
+                      // Prevent future date selection
+                      if (selectedDate <= currentDate) {
+                        setDateOfBirth(e.target.value);
+                      } else {
+                        toast.error("Date of birth cannot be a future date.");
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -174,7 +203,7 @@ const Register = () => {
                   className="input input-bordered w-full pl-10"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                 />
                 <button
@@ -189,6 +218,9 @@ const Register = () => {
                   )}
                 </button>
               </div>
+              {passwordError && (
+                <p className="text-red-500 text-sm">{passwordError}</p>
+              )}
             </div>
 
             {otpSent && otpError && (

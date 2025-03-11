@@ -12,13 +12,35 @@ const ResetPassword = () => {
     const [btnLoading, setBtnLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    // Regex for password validation (at least one lowercase, one uppercase, one special character, and minimum 6 characters)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
+
+    const validatePassword = (password) => {
+        if (!password.match(passwordRegex)) {
+            setPasswordError('Password must be at least 6 characters long, contain both lowercase and uppercase letters, and include a special character.');
+        } else {
+            setPasswordError('');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Check if passwords match
         if (password !== confirmPassword) {
+            setConfirmPasswordError("Passwords do not match.");
             toast.error("Passwords do not match.");
             return;
+        } else {
+            setConfirmPasswordError('');
         }
+
+        // Validate password
+        validatePassword(password);
+        if (passwordError) return;  // If there's a password error, don't submit the form
 
         setBtnLoading(true);
         try {
@@ -50,7 +72,10 @@ const ResetPassword = () => {
                                 className="input input-bordered w-full"
                                 placeholder="••••••••"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    validatePassword(e.target.value);
+                                }}
                                 required
                             />
                             <button
@@ -65,6 +90,7 @@ const ResetPassword = () => {
                                 )}
                             </button>
                         </div>
+                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                     </div>
 
                     {/* Confirm Password Field */}
@@ -93,6 +119,7 @@ const ResetPassword = () => {
                                 )}
                             </button>
                         </div>
+                        {confirmPasswordError && <p className="text-red-500 text-sm mt-1">{confirmPasswordError}</p>}
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full" disabled={btnLoading}>
