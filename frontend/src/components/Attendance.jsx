@@ -17,72 +17,70 @@ export default function Attendance() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchTodayAttendance();
+    fetchAllAttendance();
   }, []);
 
   useEffect(() => {
-    // Filter the attendance records to show only the logged-in user's attendance
-    const filteredEvents = attendanceRecords
-      .filter((record) => record.student._id === user?._id) // Only include the logged-in user's attendance
-      .map((record) => ({
-        title: record?.student?.name,
-        start: new Date(record.date),
-        end: new Date(record.date),
-        allDay: true,
-        student: record.student,
-        status: record.status,
-      }));
-
-    setEvents(filteredEvents);
+    if (attendanceRecords.length > 0) {
+      const filteredEvents = attendanceRecords
+        .filter((record) => record.student._id === user?._id) 
+        .map((record) => ({
+          title: record?.student?.name,
+          start: new Date(record.date),
+          end: new Date(record.date),
+          allDay: true,
+          student: record.student,
+          status: record.status,
+        }));
+      
+      setEvents(filteredEvents);
+    }
   }, [attendanceRecords, user]);
 
-  const fetchTodayAttendance = useCallback(async () => {
-    const today = moment().format("YYYY-MM-DD");
+  const fetchAllAttendance = useCallback(async () => {
     setLoading(true);
-    await fetchAttendanceByDate(today);
+    await fetchAttendanceByDate();
     setLoading(false);
   }, [fetchAttendanceByDate]);
 
   const handleSelectSlot = async ({ start }) => {
     const today = moment().format("YYYY-MM-DD");
-    const selected = moment(start).format("YYYY-MM-DD");
-
+    const selectedDate = moment(start).format("YYYY-MM-DD");
+  
+    if (selectedDate !== today) {
+      toast.error("You can only mark attendance for today!");
+      return;
+    }
+  
     if (!user || !user._id) {
       toast.error("User not found! Please log in.");
       return;
     }
-
+  
     const alreadyMarked = attendanceRecords.some(
-      (record) => record.student?._id === user?._id && moment(record.date).format("YYYY-MM-DD") === today
+      (record) =>
+        record.student?._id === user?._id && moment(record.date).format("YYYY-MM-DD") === today
     );
-
-    if (selected === today) {
-      if (user.role === "user") {
-        toast.error("If you're added in the library, please contact the admin.");
-      } else if (alreadyMarked) {
-        toast.error("Attendance already marked!");
-      } else {
-        setLoading(true);
-        await markAttendance(user._id);
-        fetchTodayAttendance();
-      }
+  
+    if (alreadyMarked) {
+      toast.error("Attendance already marked for today!");
     } else {
-      toast.error("You can only mark attendance for today!");
+      setLoading(true);
+      await markAttendance(user._id, "Present");
+      fetchAllAttendance(); 
     }
   };
-
+  
   const handleSelectEvent = (event) => {
     toast.success(`${event.student.name} is marked as ${event.status}`, {
       duration: 4000,
     });
   };
 
-  // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -92,7 +90,6 @@ export default function Attendance() {
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
-
         <button onClick={openModal} className="ml-2 text-blue-500">
           <Info size={20} />
         </button>
@@ -103,11 +100,11 @@ export default function Attendance() {
           <div className="modal-box">
             <h2 className="text-2xl font-bold mb-4">How to Mark Attendance</h2>
             <p className="hidden md:block">
-              On desktop, click on today's date to mark your attendance.
+              On desktop, click on any date to mark your attendance.
               If you're unable to mark attendance or have any issues, please contact the admin.
             </p>
             <p className="block md:hidden">
-              On mobile, push on today's date to mark your attendance.
+              On mobile, tap on any date to mark your attendance.
               If you're unable to mark attendance or have any issues, please contact the admin.
             </p>
             <div className="modal-action">
@@ -121,7 +118,7 @@ export default function Attendance() {
         <div style={{ width: "100%", height: "500px" }}>
           <Calendar
             localizer={localizer}
-            events={events} // Now only the logged-in user's events will be shown
+            events={events}
             selectable
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
@@ -134,7 +131,7 @@ export default function Attendance() {
 
       {loading && (
         <div className="absolute inset-0 flex justify-center items-center bg-gray-700 bg-opacity-50 z-50">
-         <Loader2 className="w-10 h-10 animate-spin"/>
+          <Loader2 className="w-10 h-10 animate-spin"/>
         </div>
       )}
 

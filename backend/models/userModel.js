@@ -45,6 +45,14 @@ const userSchema = new mongoose.Schema({
         enum: ['member', 'admin', 'user'],
         default: 'user'
     },
+    state: {
+        type: String,
+        required: true
+    },
+    district: {
+        type: String,
+        required: true
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date
 }, { timestamps: true });

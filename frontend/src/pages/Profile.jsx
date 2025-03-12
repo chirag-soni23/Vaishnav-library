@@ -10,6 +10,8 @@ const Profile = () => {
     email: user?.email || "",
     mobileNumber: user?.mobileNumber || "",
     dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
+    state: user?.state || "", 
+    district: user?.district || "", 
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,6 +21,8 @@ const Profile = () => {
       email: user?.email || "",
       mobileNumber: user?.mobileNumber || "",
       dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
+      state: user?.state || "",
+      district: user?.district || "",
     });
   }, [user]);
 
@@ -33,6 +37,8 @@ const Profile = () => {
       email: formData.email,
       mobileNumber: formData.mobileNumber,
       dateOfBirth: formData.dateOfBirth,
+      state: formData.state,
+      district: formData.district, 
     });
     setEditField(null);
   };
@@ -73,7 +79,6 @@ const Profile = () => {
             <p className="mt-1">Your profile information</p>
           </div>
 
-          {/* Profile Picture Modal */}
           {isModalOpen && (
             <div
               className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
@@ -119,7 +124,7 @@ const Profile = () => {
               handleFieldChange={handleFieldChange}
               saveChanges={saveChanges}
               btnLoading={btnLoading}
-              disableEdit={true} // 👈 Email edit option disabled
+              disableEdit={true} 
             />
 
             <ProfileField
@@ -146,6 +151,30 @@ const Profile = () => {
               saveChanges={saveChanges}
               btnLoading={btnLoading}
             />
+
+            <ProfileField
+              label="State"
+              icon={<User className="w-4 h-4" />}
+              value={formData.state}
+              name="state"
+              editField={editField}
+              setEditField={setEditField}
+              handleFieldChange={handleFieldChange}
+              saveChanges={saveChanges}
+              btnLoading={btnLoading}
+            />
+
+            <ProfileField
+              label="District"
+              icon={<User className="w-4 h-4" />}
+              value={formData.district}
+              name="district"
+              editField={editField}
+              setEditField={setEditField}
+              handleFieldChange={handleFieldChange}
+              saveChanges={saveChanges}
+              btnLoading={btnLoading}
+            />
           </div>
         </div>
       </div>
@@ -164,7 +193,7 @@ const ProfileField = ({
   handleFieldChange,
   saveChanges,
   btnLoading,
-  disableEdit = false, // 👈 Added this prop to disable edit
+  disableEdit = false, 
 }) => {
   return (
     <div className="space-y-1.5">
@@ -198,7 +227,7 @@ const ProfileField = ({
       ) : (
         <p className="flex items-center justify-between px-4 py-2.5 bg-base-200 rounded-lg border">
           {value || "N/A"}
-          {!disableEdit && ( // 👈 Email field ke liye pencil icon hide kar diya
+          {!disableEdit && (
             <Pencil
               className="w-4 h-4 cursor-pointer"
               onClick={() => setEditField(name)}

@@ -8,10 +8,10 @@ const Admin = () => {
   const { attendanceRecords, deleteAttendance, deleteAllAttendance } = AttendanceData();
 
   const [activeTab, setActiveTab] = useState('users');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); 
   const [isLoading, setIsLoading] = useState(false);
 
-  const loggedInUserEmail = user.email; // Get the logged-in user's email
+  const loggedInUserEmail = user.email;
 
   const handleDeleteAttendance = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this attendance record?");
@@ -45,11 +45,10 @@ const Admin = () => {
     }
   };
 
-  // Sort users to place the logged-in user's email at the top
   const sortedUsers = [...allUsers].sort((a, b) => {
-    if (a.email === loggedInUserEmail) return -1; // Place your email at the top
+    if (a.email === loggedInUserEmail) return -1; 
     if (b.email === loggedInUserEmail) return 1;
-    return 0; // Otherwise, keep the order the same
+    return 0; 
   });
 
   const filteredUsers = sortedUsers.filter(user =>
@@ -131,6 +130,8 @@ const Admin = () => {
                   <th>Email</th>
                   <th>Mobile Number</th>
                   <th>Date of Birth</th>
+                  <th>State</th> {/* Added State column */}
+                  <th>District</th> {/* Added District column */}
                   <th>Role</th>
                   <th>Actions</th>
                 </tr>
@@ -146,6 +147,8 @@ const Admin = () => {
                       <td>{user.email}</td>
                       <td>{user.mobileNumber}</td>
                       <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td>
+                      <td>{user.state || 'Not available'}</td> {/* Show state */}
+                      <td>{user.district || 'Not available'}</td> {/* Show district */}
                       <td className="capitalize">{user.role}</td>
                       <td>
                         {/* Dropdown for role selection */}
@@ -169,7 +172,7 @@ const Admin = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="text-center">
+                    <td colSpan="9" className="text-center">
                       No Users Found
                     </td>
                   </tr>
@@ -180,6 +183,7 @@ const Admin = () => {
         </div>
       )}
 
+      {/* Attendance Section */}
       {activeTab === 'attendance' && (
         <div>
           {/* Delete All Attendance Button */}

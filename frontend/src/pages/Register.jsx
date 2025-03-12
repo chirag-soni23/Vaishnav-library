@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff, Loader2, Lock, Mail, Phone, User, Calendar, Library } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserData } from "../context/UserContext.jsx";
 import toast from 'react-hot-toast';
+import statesAndDistrictsData from '../constants/StateAndDistrict.json';
 
 const Register = () => {
   const { requestOTP, registerUser, btnLoading } = UserData();
@@ -19,6 +20,30 @@ const Register = () => {
   const [otpError, setOtpError] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [state, setState] = useState(""); 
+  const [district, setDistrict] = useState(""); 
+  const [statesList, setStatesList] = useState([]); 
+  const [districtsList, setDistrictsList] = useState([]);
+  useEffect(() => {
+    const states = statesAndDistrictsData.states.map(state => ({
+      value: state.state,
+      label: state.state,
+    }));
+    setStatesList(states);
+  }, []);
+
+  useEffect(() => {
+    if (state) {
+      const selectedState = statesAndDistrictsData.states.find(s => s.state === state);
+      if (selectedState) {
+        const districts = selectedState.districts.map(district => ({
+          value: district,
+          label: district,
+        }));
+        setDistrictsList(districts);
+      }
+    }
+  }, [state]);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -48,14 +73,12 @@ const Register = () => {
       return;
     }
 
-    // Check password length and complexity using regex
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
     if (!password.match(passwordRegex)) {
       toast.error("Password must be at least 6 characters long, contain both lowercase and uppercase letters, and include a special character.");
       return;
     }
 
-    // Check future date validation
     const selectedDate = new Date(dateOfBirth);
     const currentDate = new Date();
     if (selectedDate > currentDate) {
@@ -63,7 +86,7 @@ const Register = () => {
       return;
     }
   
-    const success = await registerUser(name, email, password, mobileNumber, dateOfBirth, otp, navigate);
+    const success = await registerUser(name, email, password, mobileNumber, dateOfBirth, otp, state, district, navigate);
     if (!success) {
       setOtpError(true);
       toast.error("Invalid OTP. Please try again.");
@@ -183,6 +206,51 @@ const Register = () => {
                     }}
                     required
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* State and District */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">State</span>
+                </label>
+                <div className="relative">
+                  <select
+                    className="select select-bordered w-full"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    required
+                  >
+                    <option value="">Select State</option>
+                    {statesList.map((state) => (
+                      <option key={state.value} value={state.value}>
+                        {state.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium">District</span>
+                </label>
+                <div className="relative">
+                  <select
+                    className="select select-bordered w-full"
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    required
+                  >
+                    <option value="">Select District</option>
+                    {districtsList.map((district) => (
+                      <option key={district.value} value={district.value}>
+                        {district.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>

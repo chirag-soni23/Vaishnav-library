@@ -35,7 +35,7 @@ export const requestOTP = tryCatch(async (req, res) => {
 
 // Register User with OTP Verification
 export const registerUser = tryCatch(async (req, res) => {
-    const { name, email, password, mobileNumber, dateOfBirth, otp } = req.body;
+    const { name, email, password, mobileNumber, dateOfBirth, state, district, otp } = req.body;
 
     const redisKey = `otp:${email}`;
     const storedOTP = await redisClient.get(redisKey);
@@ -49,7 +49,7 @@ export const registerUser = tryCatch(async (req, res) => {
         return res.status(400).json({ message: "User already exists!" });
     }
 
-    user = await User.create({ name, email, password, mobileNumber, dateOfBirth });
+    user = await User.create({ name, email, password, mobileNumber, dateOfBirth, state, district });
 
     await redisClient.del(redisKey);
 
@@ -96,7 +96,7 @@ export const logout = tryCatch(async (req, res) => {
 
 // Edit User
 export const editUser = tryCatch(async (req, res) => {
-    const { name, email, mobileNumber, dateOfBirth, role } = req.body;
+    const { name, email, mobileNumber, dateOfBirth, role, state, district } = req.body;
 
     const user = await User.findById(req.params.id);
 
@@ -113,7 +113,8 @@ export const editUser = tryCatch(async (req, res) => {
     user.mobileNumber = mobileNumber || user.mobileNumber;
     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
     user.role = role || user.role;
-
+    user.state = state || user.state; 
+    user.district = district || user.district; 
     await user.save();
 
     if (user.role === "member") {
@@ -134,7 +135,6 @@ export const editUser = tryCatch(async (req, res) => {
 
     res.status(200).json({ message: "User updated successfully!", user });
 });
-
 
 // Delete User
 export const deleteUser = tryCatch(async (req, res) => {

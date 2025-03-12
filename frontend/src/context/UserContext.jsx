@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
     }
 
     // Register User with OTP
-    async function registerUser(name, email, password, mobileNumber, dateOfBirth, otp, navigate) {
+    async function registerUser(name, email, password, mobileNumber, dateOfBirth, otp, state, district, navigate) {
         setBtnLoading(true);
         try {
             const { data } = await axios.post("/api/user/register", {
@@ -36,6 +36,8 @@ export const UserProvider = ({ children }) => {
                 mobileNumber,
                 dateOfBirth,
                 otp,
+                state,  
+                district,
             });
             toast.success(data.message);
             setUser(data.user);
@@ -115,7 +117,7 @@ export const UserProvider = ({ children }) => {
     }
 
     // Edit Profile
-    async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth }) {
+    async function editProfile({ role, userId, name, email, mobileNumber, dateOfBirth, state, district }) {
         setBtnLoading(true);
         try {
             if (role && user?.role !== 'admin') {
@@ -128,7 +130,9 @@ export const UserProvider = ({ children }) => {
                 email,
                 mobileNumber,
                 dateOfBirth,
-                role
+                role,
+                state, 
+                district,  
             });
 
             toast.success(data.message);
@@ -140,7 +144,9 @@ export const UserProvider = ({ children }) => {
                     email: data.user.email,
                     mobileNumber: data.user.mobileNumber,
                     dateOfBirth: data.user.dateOfBirth,
-                    role: data.user.role
+                    role: data.user.role,
+                    state: data.user.state,
+                    district: data.user.district, 
                 });
             }
 
