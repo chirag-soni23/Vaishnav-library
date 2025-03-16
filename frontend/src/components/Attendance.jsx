@@ -56,6 +56,11 @@ export default function Attendance() {
       toast.error("User not found! Please log in.");
       return;
     }
+
+    if (user.role === "user") {
+      toast.error("Please contact admin to join the library!");
+      return;
+    }
   
     const alreadyMarked = attendanceRecords.some(
       (record) =>
@@ -77,42 +82,12 @@ export default function Attendance() {
     });
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className="container mx-auto p-2 relative">
       <h1 className="text-3xl font-bold text-center mb-5">Welcome to the Library</h1>
       <div className="text-center text-lg mb-5 flex justify-center items-center">
         <p>Please mark your attendance</p>
-        <button onClick={openModal} className="ml-2 text-blue-500">
-          <Info size={20} />
-        </button>
       </div>
-
-      {isModalOpen && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h2 className="text-2xl font-bold mb-4">How to Mark Attendance</h2>
-            <p className="hidden md:block">
-              On desktop, click on any date to mark your attendance.
-              If you're unable to mark attendance or have any issues, please contact the admin.
-            </p>
-            <p className="block md:hidden">
-              On mobile, tap on any date to mark your attendance.
-              If you're unable to mark attendance or have any issues, please contact the admin.
-            </p>
-            <div className="modal-action">
-              <button onClick={closeModal} className="btn btn-primary">Close</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="bg-white text-black p-4 rounded-lg shadow-lg">
         <div style={{ width: "100%", height: "500px" }}>
