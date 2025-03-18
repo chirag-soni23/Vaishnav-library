@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use('/api/user', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use("/api/contact", contactRoutes);
-app.use("/api/ai",aiRoutes);
+app.use("/api/ai", aiRoutes);
 
 // app.get((req, res) = > {
 //   res.send('Hello Chirag, Your Backend is Working!');
