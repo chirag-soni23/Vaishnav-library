@@ -6,7 +6,7 @@ import userRoutes from './routes/userRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
-import path from "path";
+// import path from "path";
 import cors from "cors";
 import compression from 'compression';
 import cloudinary from 'cloudinary';
@@ -39,11 +39,11 @@ app.use("/api/ai", aiRoutes);
 //   res.send('Hello Chirag, Your Backend is Working!');
 // });
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/frontend/dist")))
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
-})
+// const __dirname = path.resolve();
+// app.use(express.static(path.join(__dirname, "/frontend/dist")))
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+// })
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
