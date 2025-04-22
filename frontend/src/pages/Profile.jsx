@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
-import { Calendar, Loader2, Mail, Pencil, Phone, User, Camera, LoaderCircle, X } from "lucide-react";
+import {
+  Calendar,
+  Loader2,
+  Mail,
+  Pencil,
+  Phone,
+  User,
+  Camera,
+  LoaderCircle,
+  X,
+} from "lucide-react";
 import { UserData } from "../context/UserContext";
 
 const Profile = () => {
@@ -10,8 +20,8 @@ const Profile = () => {
     email: user?.email || "",
     mobileNumber: user?.mobileNumber || "",
     dateOfBirth: user?.dateOfBirth?.split("T")[0] || "",
-    state: user?.state || "", 
-    district: user?.district || "", 
+    state: user?.state || "",
+    district: user?.district || "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +48,7 @@ const Profile = () => {
       mobileNumber: formData.mobileNumber,
       dateOfBirth: formData.dateOfBirth,
       state: formData.state,
-      district: formData.district, 
+      district: formData.district,
     });
     setEditField(null);
   };
@@ -56,7 +66,11 @@ const Profile = () => {
         <div className="bg-base-300 rounded-xl p-6 space-y-8">
           {/* Profile Picture */}
           <div className="text-center">
-            <div className={`relative ${user.role == "user" ? "hidden" : ""} w-32 h-32 mx-auto`}>
+            <div
+              className={`relative ${
+                user.role == "user" ? "hidden" : ""
+              } w-32 h-32 mx-auto`}
+            >
               <img
                 src={user?.profilePicture?.url || "/default-profile.png"}
                 alt="Profile"
@@ -64,8 +78,11 @@ const Profile = () => {
                 onClick={() => setIsModalOpen(true)}
               />
               <label className="absolute bottom-2 right-2 bg-gray-800 p-2 rounded-full cursor-pointer">
-                {btnLoading ? <LoaderCircle className="w-5 h-5 text-white animate-spin" /> :
-                  <Camera className="w-5 h-5 text-white" />}
+                {btnLoading ? (
+                  <LoaderCircle className="w-5 h-5 text-white animate-spin" />
+                ) : (
+                  <Camera className="w-5 h-5 text-white" />
+                )}
                 <input
                   type="file"
                   accept="image/*"
@@ -75,7 +92,13 @@ const Profile = () => {
                 />
               </label>
             </div>
-            <h1 className={`text-2xl font-semibold mt-3 ${user.role == "user" ? "hidden" : ""}`}>{user?.name}</h1>
+            <h1
+              className={`text-2xl font-semibold mt-3 ${
+                user.role == "user" ? "hidden" : ""
+              }`}
+            >
+              {user?.name}
+            </h1>
             <p className="mt-1">Your profile information</p>
           </div>
 
@@ -84,7 +107,10 @@ const Profile = () => {
               className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center"
               onClick={() => setIsModalOpen(false)}
             >
-              <div className="relative p-4 rounded-lg max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="relative p-4 rounded-lg max-w-lg w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
                   className="absolute top-2 right-2 bg-slate-700 w-8 h-8 rounded-full flex justify-center items-center"
                   onClick={() => setIsModalOpen(false)}
@@ -124,7 +150,7 @@ const Profile = () => {
               handleFieldChange={handleFieldChange}
               saveChanges={saveChanges}
               btnLoading={btnLoading}
-              disableEdit={true} 
+              disableEdit={true}
             />
 
             <ProfileField
@@ -162,6 +188,7 @@ const Profile = () => {
               handleFieldChange={handleFieldChange}
               saveChanges={saveChanges}
               btnLoading={btnLoading}
+              disableEdit={true}
             />
 
             <ProfileField
@@ -174,6 +201,7 @@ const Profile = () => {
               handleFieldChange={handleFieldChange}
               saveChanges={saveChanges}
               btnLoading={btnLoading}
+              disableEdit={true} 
             />
           </div>
         </div>
@@ -193,7 +221,7 @@ const ProfileField = ({
   handleFieldChange,
   saveChanges,
   btnLoading,
-  disableEdit = false, 
+  disableEdit = false,
 }) => {
   return (
     <div className="space-y-1.5">
