@@ -52,7 +52,7 @@ const Card = () => {
           <div
             key={item.id}
             className="carousel-item flex flex-col items-center"
-            ref={(el) => (cardsRef.current[index] = el)} // Reference for each card
+            ref={(el) => (cardsRef.current[index] = el)}
           >
             <img
               src={item.image}
