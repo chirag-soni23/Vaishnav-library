@@ -35,7 +35,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/ai", aiRoutes);
 
-app.get((req, res) => {
+app.get("/",(req, res) => {
   res.send('Server is live!');
 });
 
