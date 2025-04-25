@@ -35,9 +35,9 @@ app.use('/api/attendance', attendanceRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/ai", aiRoutes);
 
-// app.get((req, res) = > {
-//   res.send('Hello Chirag, Your Backend is Working!');
-// });
+app.get((req, res) => {
+  res.send('Server is live!');
+});
 
 // const __dirname = path.resolve();
 // app.use(express.static(path.join(__dirname, "/frontend/dist")))
