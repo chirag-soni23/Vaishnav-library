@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://vaishnav-library-m312.onrender.com/"
+        target: "http://localhost:5000"
       }
     }
   },
