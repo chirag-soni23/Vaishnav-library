@@ -132,7 +132,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="text-sm hover:underline"
         >
-          Sanjay
+          Chirag
         </a> © {new Date().getFullYear()}</p>
       </div>
 
